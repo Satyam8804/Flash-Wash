@@ -1,0 +1,76 @@
+# Created by https://www.toptal.com/developers/gitignore/api/react,node
+# Edit at https://www.toptal.com/developers/gitignore?templates=react,node
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ... (Other Node.js gitignore rules)
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ... (Other Node.js gitignore rules)
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# ... (Other Node.js gitignore rules)
+
+# Optional REPL history
+.node_repl_history
+
+# dotenv environment variable files for backend (Node.js)
+/backend/.env
+
+### React ###
+# ... (Other React gitignore rules)
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# ... (Other React gitignore rules)
+
+# Optional REPL history
+.node_repl_history
+
+# dotenv environment variable files for frontend (React)
+/frontend/.env
+
+# Optional: If you have common build output directories for both frontend and backend
+# /build/
+# /dist/
+
+# Optional: If you have shared dependencies or configurations
+# /common/node_modules/
+# /common/.env
+
+# Optional: If you have backend-generated files used by the frontend
+# /frontend/public/
+
+# Optional: If you have frontend-generated files used by the backend
+# /backend/public/
+
+# Optional: If you use Docker for both frontend and backend
+# /frontend/Dockerfile
+# /backend/Dockerfile
+
+# End of https://www.toptal.com/developers/gitignore/api/react,node
