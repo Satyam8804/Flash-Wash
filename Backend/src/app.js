@@ -7,7 +7,8 @@ const app = express()
 //seting up middlewares
 
 app.use(cors(
-    {   origin:process.env.CORS_ORIGIN,
+    {   
+        origin:process.env.CORS_ORIGIN,
         Credential:true
     }))
     
@@ -24,9 +25,9 @@ app.get('/',(req,res)=>{
 // routes import 
 
 import userRouter from './routes/user.routes.js'
+import { verifyJWT } from './middlewares/auth.middleware.js'
 
 // route declaration
-
 app.use("/api/v1/users",userRouter)
 
 export {app}

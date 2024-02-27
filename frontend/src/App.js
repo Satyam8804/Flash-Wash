@@ -1,24 +1,26 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
+import {Outlet} from 'react-router-dom'
+import Navbar from './components/Navbar';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './utils/AuthContext';
+
 function App() {
+
+const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <AuthProvider>
+        <Toaster/>
+        <div className="w-screen App" >
+        <Navbar/>
+        <div className="w-screen bg-[#fdfdfe] min-h-full flex justify-center">
+        <Outlet/>
+        </div>
     </div>
+    </AuthProvider>
+  
   );
 }
 
