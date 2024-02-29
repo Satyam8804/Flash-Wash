@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
@@ -7,8 +7,9 @@ import Loader from '../Loader';
 
 
 const LoginInForm = () => {
-  const {setIsLoggedIn , setToken } = useContext(AuthContext)
+  const {setIsLoggedIn} = useContext(AuthContext)
   const [loader ,setLoader] = useState(false)
+
 
   const navigate = useNavigate();
 
@@ -30,9 +31,12 @@ const LoginInForm = () => {
     });
   }
 
+  // console.log(role)
+
   const  submitHandler= async(event)=>{
     event.preventDefault();
     setLoader(true)
+
     try {
       
       const response = await fetch('http://localhost:8000/api/v1/users/login', {
@@ -45,13 +49,19 @@ const LoginInForm = () => {
       if (response.ok) {
         const data = await response.json();
         setIsLoggedIn(true);
+        
         localStorage.setItem("currentUser",JSON.stringify(data?.data))
         localStorage.setItem("accessToken",JSON.stringify(data?.data?.accessToken))
-
+        localStorage.setItem("role",JSON.stringify(data?.data?.user?.role))
         setLoader(false)
         toast.success(data?.message);
-        navigate('/')
-        console.log(data)
+        if(data?.data?.user?.role === 'employee'){
+          navigate('/api/v1/employee')
+        }else if(data?.data?.user?.role === 'admin'){
+          navigate('/api/v1/admin')
+        }else{
+          navigate('/')
+        }
       } else {
         toast.error("Form submission failed:");
         console.error('Form submission failed:', response.statusText);

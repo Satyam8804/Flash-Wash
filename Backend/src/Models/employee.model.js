@@ -18,4 +18,6 @@ const employeeSchema = new Schema({
     },
 },{timestamps:true})
 
+
+
 export const Employee = mongoose.model("Employee",employeeSchema);

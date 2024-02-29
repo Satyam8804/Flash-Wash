@@ -3,6 +3,7 @@ import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAc
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from './../middlewares/auth.middleware.js';
 import isAdmin from "../middlewares/admin.middleware.js";
+import { getAllService } from "../Controllers/admin.controller.js";
 
 const router = Router()
 
@@ -11,6 +12,8 @@ router.route('/register').post(
 )
 
 router.route('/login').post(loginUser)
+
+router.route('/get-all-services').get(getAllService)
 
 
 

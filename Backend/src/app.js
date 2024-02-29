@@ -29,6 +29,7 @@ import adminRouter from './routes/admin.routes.js'
 import employeeRouter from './routes/employee.route.js'
 
 import { verifyJWT } from './middlewares/auth.middleware.js'
+import isAdmin from './middlewares/admin.middleware.js'
 
 // route declaration
 app.use("/api/v1/users",userRouter)

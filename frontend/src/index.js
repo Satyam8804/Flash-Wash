@@ -14,6 +14,8 @@ import UserProfile from './Pages/UserProfile';
 import Profile from './Pages/Profile';
 import Appointment from './Pages/Appointment';
 import ChangePassword from './Pages/ChangePassword';
+import Dashboard from './Admin/Dashboard';
+import Employee from './Employee/Employee';
 
 
 const appRouter = createBrowserRouter([
@@ -61,6 +63,13 @@ const appRouter = createBrowserRouter([
       }
     ],
     errorElement:<Error/>
+  },
+  {
+    path :'/api/v1/admin',
+    element:<Dashboard/>
+  },{
+    path :'/api/v1/employee',
+    element:<Employee/>
   }
 ])
 

@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const serviceSchema = new  Schema({
+const serviceSchema = new Schema({
     name :{
         type:String,
         required:true,
@@ -23,7 +23,7 @@ const serviceSchema = new  Schema({
         required:true,
         trim: true,
     },
-    image:{
+    serviceImage:{
         type:String,
         required:true,
     },
@@ -34,7 +34,7 @@ const serviceSchema = new  Schema({
     },
     category:{
         type:String,
-        enum:['Exterior Wash','Interior Detailing'], 
+        enum:['Exterior Wash','Interior wash'], 
     },
     vehicleType:{
         type:String,
@@ -44,7 +44,7 @@ const serviceSchema = new  Schema({
 },{timestamps:true})
 
 
-export const Services = mongoose.model("Service",serviceSchema);
+export const Service = mongoose.model("Service",serviceSchema);
 
 
 
