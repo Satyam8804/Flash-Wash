@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Body from './components/Body';
+import Body from './Pages/Body';
 import AboutUs from './Pages/AboutUs';
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';

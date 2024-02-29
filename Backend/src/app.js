@@ -25,9 +25,16 @@ app.get('/',(req,res)=>{
 // routes import 
 
 import userRouter from './routes/user.routes.js'
+import adminRouter from './routes/admin.routes.js'
+import employeeRouter from './routes/employee.route.js'
+
 import { verifyJWT } from './middlewares/auth.middleware.js'
 
 // route declaration
 app.use("/api/v1/users",userRouter)
+
+app.use("/api/v1/admin",adminRouter)
+
+app.use("/api/v1/employee",employeeRouter)
 
 export {app}

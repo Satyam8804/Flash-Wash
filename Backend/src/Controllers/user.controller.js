@@ -298,18 +298,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Avatar updated successfully"));
 });
 
-const getAllUsersDetails = asyncHandler(async (req, res) => {
-    const users = await User.find({});
 
-    if(!users){
-        console.error("Error fetching users:", error.message);
-        throw new ApiError(404, "No user found !!");
-    }
-    console.log("All Users:", users);
-    return res
-        .status(200)
-        .json(new ApiResponse(200, users, "All user details fetched !"));
-});
 
 export {
   registerUser,
@@ -320,7 +309,6 @@ export {
   getCurrentUser,
   updateAccountDetails,
   updateUserAvatar,
-  getAllUsersDetails
 };
 
 //signUp

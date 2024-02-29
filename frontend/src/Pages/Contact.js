@@ -54,7 +54,7 @@ const Contact = () => {
         <div className="flex flex-col md:absolute right-40 bottom-0 w-[400px] bg-white p-8  gap-4">
           <h2 className="text-2xl font-bold font-lato">CONTACT US</h2>
           <form onSubmit={handleSubmit} className="space-y-2">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 ">
               <label htmlFor="name" className="block text-sm font-medium">
                 Name:
               </label>

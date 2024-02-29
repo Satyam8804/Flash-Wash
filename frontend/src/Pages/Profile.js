@@ -158,7 +158,7 @@ const Profile = () => {
                         <img
                           src={selectedImage ? selectedImage : userData?.avatar}
                           alt=""
-                          className="h-full w-full rounded-[50%] transition duration-300 transform hover:scale-105"
+                          className="h-full w-full rounded-[50%] transition duration-300 transform hover:scale-105 object-center"
                         />
                         <label className="flex items-center justify-center rounded-[50%] h-full w-full bg-black text-white absolute cursor-pointer left-0 top-0 transform opacity-50 hover:opacity-70 transition duration-300">
                           <input
@@ -197,7 +197,7 @@ const Profile = () => {
 
             {editing ? (
               <form>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 text-left">
                   <div>
                     <label htmlFor="fullName">Full Name:</label>
                     <input
