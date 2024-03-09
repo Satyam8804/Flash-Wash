@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../Controllers/user.controller.js";
+import { bookAppointment, changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../Controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from './../middlewares/auth.middleware.js';
 import isAdmin from "../middlewares/admin.middleware.js";
@@ -33,6 +33,9 @@ router.route('/updateAvatar').patch(
     verifyJWT,
     upload.single("avatar"),
     updateUserAvatar)
+
+router.route('/book-appointment').post(verifyJWT,bookAppointment)
+
 
     
 export default router

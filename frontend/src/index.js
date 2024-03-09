@@ -16,6 +16,8 @@ import Appointment from './Pages/Appointment';
 import ChangePassword from './Pages/ChangePassword';
 import Dashboard from './Admin/Dashboard';
 import Employee from './Employee/Employee';
+import Appointments from './Admin/Appointments';
+import Employees from './Admin/Employees';
 
 
 const appRouter = createBrowserRouter([
@@ -66,7 +68,17 @@ const appRouter = createBrowserRouter([
   },
   {
     path :'/api/v1/admin',
-    element:<Dashboard/>
+    element:<Dashboard/>,
+    children:[
+      {
+        path:'appointment',
+        element:<Appointments/>
+      },
+      {
+        path:'employees',
+        element:<Employees/>
+      }
+  ]
   },{
     path :'/api/v1/employee',
     element:<Employee/>

@@ -4,6 +4,8 @@ import { User } from "../Models/user.models.js";
 import { ApiResponse } from "../Utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../Utils/cloudinary.js";
 import jwt from "jsonwebtoken";
+import { Service } from "./../Models/services.model.js";
+import { Appointment } from "../Models/appointment.model.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -45,19 +47,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User Already Email or username already exist .");
   }
 
-  // const avatarLocalPath = req?.files?.avatar[0]?.path || "";   // req.file comes from multer
-  // console.log(avatarLocalPath)
-
-  // if(!avatarLocalPath){
-  //     throw new ApiError(400,"Avatar file is required !")
-  // }
-
-  // const avatar = await uploadOnCloudinary(avatarLocalPath)  // using await to wait until upload successfull
-
-  // if(!avatar){
-  //     throw new ApiError(400 , "Avatar file is required !")
-  // }
-
   const user = await User.create({
     fullName: `${fName} ${LName}`,
     avatar: "",
@@ -90,6 +79,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, createdUser, "User Registered Successfully !"));
 });
 
@@ -298,6 +289,64 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Avatar updated successfully"));
 });
 
+const bookAppointment = asyncHandler(async (req, res) => {
+  const currentUser = req.user;
+  const { serviceId, scheduledDate, location, notes } = req.body;
+
+  try {
+    const existingAppointment = await Appointment.findOne({
+      user: currentUser._id,
+      service: serviceId,
+      scheduledDate,
+    });
+
+    if (existingAppointment) {
+      return res.status(409).json({
+        success: false,
+        message: 'Appointment already booked for this user, service, and date.',
+      });
+    }
+
+    const service = await Service.findById(serviceId);
+
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: 'Service not found!',
+      });
+    }
+
+    const newAppointment = await Appointment.create({
+      user: currentUser._id,
+      service: serviceId,
+      scheduledDate,
+      location,
+      notes,
+    });
+
+    const populatedAppointment = await Appointment.findById(newAppointment._id)
+      .populate({
+        path: 'user',
+        model: 'User',
+        select: '-password -subscriptions -refreshToken',
+      })
+      .populate('service')
+      .exec();
+
+    return res.status(201).json({
+      success: true,
+      message: 'Appointment booked successfully!',
+      data: populatedAppointment,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error booking appointment',
+      error: error.message,
+    });
+  }
+});
+
 
 
 export {
@@ -309,6 +358,7 @@ export {
   getCurrentUser,
   updateAccountDetails,
   updateUserAvatar,
+  bookAppointment,
 };
 
 //signUp

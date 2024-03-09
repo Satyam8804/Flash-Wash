@@ -7,15 +7,12 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './utils/AuthContext';
 
 function App() {
-
-const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   return (
     <AuthProvider>
         <Toaster/>
         <div className="w-screen App" >
         <Navbar/>
-        <div className="w-screen bg-[#fdfdfe] min-h-full flex justify-center">
+        <div className="w-screen bg-[#fdfdfe] min-h-full flex justify-center flex-col">
         <Outlet/>
         </div>
     </div>

@@ -2,3 +2,6 @@
   text-align: center;
 }
 
+.appointment::-webkit-scrollbar{
+  width: 0;
+}

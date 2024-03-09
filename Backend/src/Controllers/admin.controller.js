@@ -5,6 +5,7 @@ import { ApiError } from "../Utils/ApiError.js";
 import { Employee } from "./../Models/employee.model.js";
 import { Service } from "../Models/services.model.js";
 import { uploadOnCloudinary } from "../Utils/cloudinary.js";
+import { Appointment } from "../Models/appointment.model.js";
 
 const getAllUsersDetails = asyncHandler(async (req, res) => {
   try {
@@ -114,6 +115,7 @@ const getAllEmployees = asyncHandler(async (req, res) => {
       })
       .exec();
 
+
     if (!employees || employees.length === 0) {
       throw new ApiError(404, "No employee found!");
     }
@@ -213,4 +215,73 @@ const getAllService = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllUsersDetails, getAllEmployees, createEmployee, createService , getAllService};
+
+const getAllAppointment = asyncHandler(async(req,res)=>{
+    try {
+      const appontments = await Appointment.find({})
+      .populate("user","-password -refreshToken")
+      .populate('service')
+      .exec()
+  
+      if(!appontments || appontments.length === 0){
+        throw new ApiError(404,"No appointment Available")
+      }
+      console.log("All Appointment:", appontments);
+  
+      return res.status(200)
+      .json(
+        new ApiResponse(200,appontments,"All appointment fetched ")
+      )
+  
+    } catch (error) {
+      console.error("Error fetching employees:", error.message);
+      throw new ApiError(404, "No Appointment found!");
+    }
+
+})
+
+
+const updateAppointment = asyncHandler(async(req,res)=>{
+  try {
+    const { _id, isConfirmed, workProgress } = req.body;
+
+    console.log(_id , isConfirmed ,workProgress)
+
+    const appointment = await Appointment.findById(_id);
+
+    console.log(appointment)
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Appointment not found!',
+      });
+    }
+
+    if (isConfirmed) {
+      appointment.isConfirmed = isConfirmed;
+      appointment.workProgress = workProgress;
+
+      await appointment.save();
+
+      return res.status(200).json({
+        success: true,
+        message: 'Appointment updated successfully!',
+        data: appointment,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot update workProgress without confirming the appointment first.',
+      });
+    }
+  } catch (error) {
+    console.error('Error updating appointment:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating appointment',
+    });
+  }
+})
+
+export { getAllUsersDetails, getAllEmployees, createEmployee, createService , getAllService ,getAllAppointment ,updateAppointment};
