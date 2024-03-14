@@ -6,6 +6,7 @@ import { uploadOnCloudinary } from "../Utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 import { Service } from "./../Models/services.model.js";
 import { Appointment } from "../Models/appointment.model.js";
+import { Feedback } from "../Models/feedback.model.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -303,7 +304,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
     if (existingAppointment) {
       return res.status(409).json({
         success: false,
-        message: 'Appointment already booked for this user, service, and date.',
+        message: "Appointment already booked for this user, service, and date.",
       });
     }
 
@@ -312,7 +313,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
     if (!service) {
       return res.status(404).json({
         success: false,
-        message: 'Service not found!',
+        message: "Service not found!",
       });
     }
 
@@ -326,28 +327,98 @@ const bookAppointment = asyncHandler(async (req, res) => {
 
     const populatedAppointment = await Appointment.findById(newAppointment._id)
       .populate({
-        path: 'user',
-        model: 'User',
-        select: '-password -subscriptions -refreshToken',
+        path: "user",
+        model: "User",
+        select: "-password -subscriptions -refreshToken",
       })
-      .populate('service')
+      .populate("service")
       .exec();
 
     return res.status(201).json({
       success: true,
-      message: 'Appointment booked successfully!',
+      message: "Appointment booked successfully!",
       data: populatedAppointment,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: 'Error booking appointment',
+      message: "Error booking appointment",
       error: error.message,
     });
   }
 });
 
+const getAppointments = asyncHandler(async (req, res) => {
+  const currentUser = req.user;
+  try {
+    const appointment = await Appointment.findOne({ user: currentUser._id })
+      .populate("service")
+      .exec();
 
+    if (appointment) {
+      return res
+        .status(201)
+        .json(
+          new ApiResponse(200, appointment, "Appointment fetched successfully!")
+        );
+    } else {
+      console.log("User has no appointments.");
+      return res.status(404).json({
+        success: false,
+        message: "Appointment not found!",
+      });
+    }
+  } catch (error) {
+    console.log("Error checking appointments:", error);
+    throw new ApiError(400, "Error while fetching Appointment");
+  }
+});
+
+const getFeedback = asyncHandler(async (req, res) => {
+  const { ratings, comment, appointmentId } = req.body;
+
+  console.log(ratings , comment , appointmentId)
+
+  const currentUser = req.user;
+  try {
+    const feedback = await Feedback.findById(appointmentId);
+
+    if (feedback) {
+      return res.status(409).json({
+        success: false,
+        message: "Feedback already posted !",
+      });
+    }
+
+    const newFeedback = await Feedback.create({
+      appointment:appointmentId,
+      user: currentUser?._id,
+      ratings,
+      comment,
+    });
+    
+    const populatedFeedback = await Appointment.findById(newFeedback._id)
+      .populate({
+        path: "user",
+        model: "User",
+        select: "-password -subscriptions -refreshToken",
+      })
+      .populate({ path: "appointment", model: "Appointment" })
+      .exec();
+
+    return res.status(201).json({
+      success: true,
+      message: "Feedback posted successfully!",
+      data: populatedFeedback,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error posting feedback",
+      error: error.message,
+    });
+  }
+});
 
 export {
   registerUser,
@@ -359,6 +430,8 @@ export {
   updateAccountDetails,
   updateUserAvatar,
   bookAppointment,
+  getAppointments,
+  getFeedback,
 };
 
 //signUp

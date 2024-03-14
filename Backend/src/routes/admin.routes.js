@@ -18,4 +18,6 @@ router.route('/get-all-appointment').get(verifyJWT,isAdmin,getAllAppointment)
 
 router.route('/update-appointment').patch(verifyJWT,isAdmin,updateAppointment)
 
+router.route("/get-all-service").get(verifyJWT,isAdmin,getAllService)
+
 export default router

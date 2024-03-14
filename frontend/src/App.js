@@ -12,7 +12,7 @@ function App() {
         <Toaster/>
         <div className="w-screen App" >
         <Navbar/>
-        <div className="w-screen bg-[#fdfdfe] min-h-full flex justify-center flex-col">
+        <div className="w-full bg-[#fdfdfe] flex justify-center flex-col">
         <Outlet/>
         </div>
     </div>

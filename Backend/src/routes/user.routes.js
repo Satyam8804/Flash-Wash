@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { bookAppointment, changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../Controllers/user.controller.js";
+import { bookAppointment, changeCurrentPassword, getAppointments, getCurrentUser, getFeedback, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../Controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from './../middlewares/auth.middleware.js';
-import isAdmin from "../middlewares/admin.middleware.js";
 import { getAllService } from "../Controllers/admin.controller.js";
 
 const router = Router()
@@ -36,6 +35,8 @@ router.route('/updateAvatar').patch(
 
 router.route('/book-appointment').post(verifyJWT,bookAppointment)
 
-
+router.route('/get-appointment').get(verifyJWT,getAppointments)
     
+router.route('/feedback').post(verifyJWT,getFeedback)
+
 export default router

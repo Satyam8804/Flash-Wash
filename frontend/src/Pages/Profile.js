@@ -111,7 +111,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="flex gap-4 items-center w-full shadow-md p-4 bg-gray-400 ">
+      <div className="flex gap-4 items-center w-full shadow-md p-4 bg-[#1c212a] rounded-lg ">
         <span className="text-4xl font-bold text-white font-lato">Profile</span>
         <IoIosArrowForward color="white" size={32} />
         <span className="text-4xl font-bold text-white font-lato ">

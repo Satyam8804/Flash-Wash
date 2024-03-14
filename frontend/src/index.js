@@ -50,7 +50,7 @@ const appRouter = createBrowserRouter([
         element:<UserProfile/>,
         children:[
           {
-            path:'edit-profile',
+            path:'',
             element:<Profile/>
           },
           {
