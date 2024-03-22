@@ -1,8 +1,10 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import {Link,useLocation,useNavigate} from 'react-router-dom'
 import cover from '../assets/cover.jpg'
+import { useState } from 'react'
 
 const Body = () => {
+  const navigate=useNavigate()
   return (
     <div className='flex flex-col w-screen mt-14 sm:mt-0 gap-8'>
     <div className="bg-gray-200 py-12 flex flex-col w-full">
@@ -20,7 +22,11 @@ const Body = () => {
           </div>
           <Link 
             className="flex h-10 w-36 items-center justify-center rounded-md border border-gray-200 bg-white px-8 text-md font-medium shadow-lg hover:bg-black hover:text-white" 
-            to="#"
+            to="/service"
+            onClick={()=>{
+              navigate('/service')
+              window.location.reload()
+            }}
           >
             Book Now
           </Link>
