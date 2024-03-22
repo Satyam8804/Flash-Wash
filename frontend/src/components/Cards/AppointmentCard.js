@@ -65,7 +65,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
     >
       <div className="flex gap-4 items-center">
         <img
-          src={appointment?.user?.avatar}
+          src={appointment?.user?.avatar!==""?appointment?.user?.avatar:'https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg'}
           alt="profile"
           className="w-16 h-16 rounded-[50%] border-2 transfrom brightness-125 object-fill"
         />
@@ -89,7 +89,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
 
       <div className="flex gap-2 items-center">
       <FaLocationDot />
-      <span>{appointment?.user?.address?.street} , {appointment?.user?.address?.city}</span>
+      <span>{appointment?.location}</span>
       </div>
       {/* Editable Fields */}
       <div className="flex items-center gap-2">

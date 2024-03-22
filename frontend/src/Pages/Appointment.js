@@ -22,7 +22,7 @@ const Appointment = () => {
           },
         }
       );
-
+        console.log(response)
       if (response.ok) {
         const data = await response.json();
         setAppointment(data?.data);
@@ -72,44 +72,43 @@ const Appointment = () => {
   }
 
 
-  const { service, scheduledDate, isConfirmed, workProgress, location, notes } =
-    appointment?? {};
+  
 
   return (
     <>
-    {appointment && <div className='w-[300px] bg-white rounded-lg shadow-lg p-6'>
+    {appointment && appointment.map((ele)=><><div className='w-[300px] bg-white rounded-lg shadow-lg p-6'>
   <h3 className='text-xl font-bold mb-4'>Appointment Details</h3>
   <div className='grid grid-cols-2 gap-4 mb-4'>
     <div>
       <p className='text-gray-600'><strong>Service:</strong></p>
-      <p className='text-lg text-gray-800'>{service?.name}</p>
+      <p className='text-lg text-gray-800'>{ele?.service?.name}</p>
     </div>
     <div>
       <p className='text-gray-600'><strong>Scheduled Date:</strong></p>
-      <span>{new Date(scheduledDate).toLocaleDateString().replaceAll('/','-')}</span>
+      <span>{new Date(ele?.scheduledDate).toLocaleDateString().replaceAll('/','-')}</span>
     </div>
   </div>
   <div className='grid grid-cols-2 gap-4 mb-4'>
     <div>
       <p className='text-gray-600'><strong>Confirmed:</strong></p>
-      <p className={`text-lg ${isConfirmed ? 'text-green-600' : 'text-red-600'}`}>
-        {isConfirmed ? 'Yes' : 'No'}
+      <p className={`text-lg ${ele?.isConfirmed ? 'text-green-600' : 'text-red-600'}`}>
+        {ele?.isConfirmed ? 'Yes' : 'No'}
       </p>
     </div>
     <div>
       <p className='text-gray-600'><strong>Work Progress:</strong></p>
-      <p className='text-lg text-gray-800'>{workProgress}</p>
+      <p className='text-lg text-gray-800'>{ele?.workProgress}</p>
     </div>
   </div>
   <div className='mb-4'>
     <p className='text-gray-600'><strong>Location:</strong></p>
-    <p className='text-lg text-gray-800'>{location}</p>
+    <p className='text-lg text-gray-800'>{ele?.location}</p>
   </div>
   <div>
     <p className='text-gray-600'><strong>Notes:</strong></p>
-    <p className='text-lg text-gray-800'>{notes}</p>
+    <p className='text-lg text-gray-800'>{ele?.notes}</p>
   </div>
-</div>}
+</div><br/><br/></>) }
   {showFeedbackForm && (
       <div className='mt-4'>
         <FeedbackForm onSubmit={handleFeedbackSubmit} />

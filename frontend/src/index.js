@@ -18,6 +18,7 @@ import Dashboard from './Admin/Dashboard';
 import Employee from './Employee/Employee';
 import Appointments from './Admin/Appointments';
 import Employees from './Admin/Employees';
+import ServiceDashBoard from './Pages/ServiceDashBoard';
 
 
 const appRouter = createBrowserRouter([
@@ -32,6 +33,10 @@ const appRouter = createBrowserRouter([
       {
         path:'/about',
         element:<AboutUs/>
+      },
+      {
+        path:'/service',
+        element:<ServiceDashBoard/>
       },
       {
         path:'/api/v1/users/login',

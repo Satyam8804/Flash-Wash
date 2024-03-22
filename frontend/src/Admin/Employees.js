@@ -21,7 +21,7 @@ const Employees = () => {
           'Content-Type' :'application/json'
         }
       })
-
+      console.log(response)
       if(response.ok){
         const data = await response.json()
         console.log(data?.data)
