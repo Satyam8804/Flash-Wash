@@ -60,7 +60,7 @@ const LoginInForm = () => {
         }else if(data?.data?.user?.role === 'admin'){
           navigate('/api/v1/admin')
         }else{
-          navigate('/')
+          navigate('/',{state:{loginProp:true}})
         }
       } else {
         toast.error("Form submission failed:");

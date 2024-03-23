@@ -20,10 +20,11 @@ const Appointments = () => {
           'Content-Type': 'application/json',
         },
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         setAppointments(data?.data);
+        console.log("appoint",data?.data)
       } else {
         const errorData = await response.json();
         console.error('Error fetching appointment data:', errorData);

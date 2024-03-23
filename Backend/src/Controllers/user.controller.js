@@ -28,7 +28,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { fName, LName, username, email, password, phoneNumber, address } =
     req.body;
-  console.log(req.body);
+  console.log("br",req.body);
   // validation
   if (
     [fName, LName, email, username, password, phoneNumber].some(
@@ -298,7 +298,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 const bookAppointment = asyncHandler(async (req, res) => {
   const currentUser = req.user;
   const { serviceId, scheduledDate, location, notes } = req.body;
-
+  console.log("meri body",req.body)
   try {
     const existingAppointment = await Appointment.findOne({
       user: currentUser._id,
@@ -345,6 +345,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
       data: populatedAppointment,
     });
   } catch (error) {
+    console.log("meri body",error)
     return res.status(500).json({
       success: false,
       message: "Error booking appointment",
@@ -356,7 +357,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
 const getAppointments = asyncHandler(async (req, res) => {
   const currentUser = req.user;
   try {
-    const appointment = await Appointment.findOne({ user: currentUser._id })
+    const appointment = await Appointment.find({ user: currentUser._id })
       .populate("service")
       .exec();
 

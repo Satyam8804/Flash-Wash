@@ -12,7 +12,7 @@ const SignUpForm = () => {
 
   const [formData, setFormData] = useState({
     fName: "",
-    lName: "",
+    LName: "",
     email: "",
     password: "",
     cPass: "",
@@ -64,12 +64,12 @@ const SignUpForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setIsLoggedIn(true);
-        localStorage.setItem("currentUser",JSON.stringify(data?.data))
-        localStorage.setItem("accessToken",JSON.stringify(data?.data?.accessToken))
+        //setIsLoggedIn(true);
+        //localStorage.setItem("currentUser",JSON.stringify(data?.data))
+        //localStorage.setItem("accessToken",JSON.stringify(data?.data?.accessToken))
         setLoader(false)
         toast.success(data?.message);
-        navigate('/')
+        navigate('/api/v1/users/login')
         console.log('Form submitted successfully:', data);
       } else {
         toast.error("Form submission failed:");
@@ -106,8 +106,8 @@ const SignUpForm = () => {
                 required
                 placeholder='Enter Last Name'
                 type="text"
-                name='lName'
-                value={formData.lName}
+                name='LName'
+                value={formData.LName}
                 onChange={changeHandler}
                 className="h-10 w-full rounded px-4 border font-semibold text-sm"
               />
