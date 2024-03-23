@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { AuthContext } from '../utils/AuthContext';
 import { FaCircleUser } from "react-icons/fa6";
-
+import logo from '../assets/logo.gif'
 const Navbar = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const {setIsLoggedIn} = useContext(AuthContext)
@@ -13,10 +13,10 @@ const Navbar = () => {
   },[isLoggedIn])
 
   return (
-    <div className='flex justify-between items-center p-4 shadow-lg bg-[#18201e] text-white text-xl'>
+    <div className='flex justify-between items-center px-8 shadow-lg bg-[#18201e] text-white text-xl'>
       <div className="logo">
         <Link to="/">
-          <img src={""} alt="logo" width={70} height={50} loading='lazy' />
+          <img src={logo} alt="logo" className='w-24 h-24' loading='lazy' />
         </Link>
       </div>
       <div className="links">

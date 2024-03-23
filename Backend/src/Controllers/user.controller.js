@@ -49,7 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
-    fullName: `${fName} ${LName}`,
+    fullName:` ${fName} ${LName}`,
     avatar: "",
     email,
     password,
@@ -77,13 +77,18 @@ const registerUser = asyncHandler(async (req, res) => {
   // Assign refresh token to the user
   user.refreshToken = refreshToken;
   await user.save({ validateBeforeSave: false });
-
+  const options = {
+    // to secure cookie user can not modify
+    httpOnly: true,
+    secure: true,
+  };
   return res
     .status(201)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, createdUser, "User Registered Successfully !"));
 });
+
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
