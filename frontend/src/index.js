@@ -19,6 +19,7 @@ import Employee from './Employee/Employee';
 import Appointments from './Admin/Appointments';
 import Employees from './Admin/Employees';
 import ServiceDashBoard from './Pages/ServiceDashBoard';
+import Checkout from './Pages/Ckeckout';
 
 
 const appRouter = createBrowserRouter([
@@ -37,6 +38,10 @@ const appRouter = createBrowserRouter([
       {
         path:'/service',
         element:<ServiceDashBoard/>
+      },
+      {
+        path:'/checkout',
+        element:<Checkout/>
       },
       {
         path:'/api/v1/users/login',

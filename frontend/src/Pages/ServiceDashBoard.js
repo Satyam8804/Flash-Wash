@@ -55,11 +55,11 @@ const ServiceDashBoard = () => {
     if(status.trim()==="true"){
       const res = await scheduleService(currentServiceId.current,scheduleDate,address,notes)
       if(res===true){
-        toast.success("Appointment added successfully")
-        navigate('/api/v1/users/profile/appointment')
+        
+        navigate('/checkout')
       }else{
-        toast.success("Appointment added successfully")
-        navigate('/api/v1/users/profile/appointment')
+        //toast.success("Appointment added successfully")
+        navigate('/checkout')
       }
     }else{
       toast.error("Please Login to continue")

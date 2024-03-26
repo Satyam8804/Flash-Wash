@@ -39,4 +39,6 @@ router.route('/get-appointment').get(verifyJWT,getAppointments)
     
 router.route('/feedback').post(verifyJWT,getFeedback)
 
+
+
 export default router
