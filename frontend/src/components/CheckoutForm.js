@@ -8,7 +8,7 @@ import {
 import { scheduleService } from '../utils/service';
 import { Route, useNavigate, useRoutes } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-export const CheckoutForm = () => {
+export const CheckoutForm = ({price}) => {
     const navigate=useNavigate()
     const [paytext,setPayText]=useState("Pay")
     //const route=useRoutes()
@@ -17,11 +17,12 @@ export const CheckoutForm = () => {
   const elements = useElements();
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [emailInput, setEmailInput] = useState('');
+  const email =JSON.parse(localStorage.getItem('currentUser')) ;
+
+  const [emailInput, setEmailInput] = useState(email.user.email);
 
   const backendUrl = "https://j432axvrjy.us.aircode.run/payment";
-
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     setPayText("Initialising payment, Please Wait...")
@@ -40,8 +41,8 @@ export const CheckoutForm = () => {
       return;
     }
 
-    const price = 1200;
-
+    const prices = parseInt(price);
+  
     // Create the PaymentIntent and obtain clientSecret from your server endpoint
     const res = await fetch(backendUrl, {
       method: 'POST',
@@ -51,7 +52,7 @@ export const CheckoutForm = () => {
       body: JSON.stringify({
         currency: 'inr',
         email: emailInput,
-        amount: price,
+        amount: prices,
         paymentMethodType: "card",
         description : "Car wash payment"
       }),
@@ -105,8 +106,10 @@ export const CheckoutForm = () => {
       <div className='mb-3'>
         <label htmlFor="email-input">Email</label>
         <div>
-          <input value={emailInput} onChange={(e => setEmailInput(e.target.value))} type="email" id="email-input" placeholder='johndoe@gmail.com' />
+          <input style={{borderColor:'black',borderWidth:1,borderRadius:8}} disabled value={emailInput} onChange={(e => setEmailInput(e.target.value))} type="email" id="email-input" placeholder={{emailInput}} />
         </div>
+ 
+        <p>Amount to Pay -: {price}</p>
       </div>
       <PaymentElement />
       <button type="submit" disabled={!stripe || !elements}>

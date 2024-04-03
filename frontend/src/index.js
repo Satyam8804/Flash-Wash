@@ -20,6 +20,8 @@ import Appointments from './Admin/Appointments';
 import Employees from './Admin/Employees';
 import ServiceDashBoard from './Pages/ServiceDashBoard';
 import Checkout from './Pages/Ckeckout';
+import Customers from './Admin/Customers';
+import Service from './Admin/Service';
 
 
 const appRouter = createBrowserRouter([
@@ -87,7 +89,15 @@ const appRouter = createBrowserRouter([
       {
         path:'employees',
         element:<Employees/>
-      }
+      },
+      {
+        path:'customers',
+        element:<Customers/>
+      },
+      {
+        path:'service',
+        element:<Service/>
+      },
   ]
   },{
     path :'/api/v1/employee',

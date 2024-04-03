@@ -1,9 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import bodyParser from "body-parser";
 
 const app = express()
-
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 //seting up middlewares
 
 app.use(cors(
@@ -12,8 +14,9 @@ app.use(cors(
         Credential:true
     }))
     
-app.use(express.json({limit: '16kb'   }))
-app.use(express.urlencoded({extended:true,limit: '16kb'})) // related to geting data from url
+app.use(express.json({limit: '50mb' }))
+
+app.use(express.urlencoded({extended:true,limit: '50mb'})) // related to geting data from url
 app.use(express.static("public"))
 app.use(cookieParser())
 

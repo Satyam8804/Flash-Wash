@@ -136,6 +136,7 @@ const createService = asyncHandler(async (req, res) => {
   const {
     name,
     description,
+    serviceImage,
     price,
     duration,
     isActive,
@@ -144,7 +145,7 @@ const createService = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (
-    [name, description, price, duration, isActive, category, vehicleType].some(
+    [name,serviceImage ,description, price, duration, isActive, category, vehicleType].some(
       (field) => field?.trim() === ""
     )
   ) {
@@ -152,7 +153,7 @@ const createService = asyncHandler(async (req, res) => {
   }
 
   const existedService = await Service.findOne({
-    $or: [{ name }, { category }], // check more than 1 field  using $or : [{1},{2},...]
+    $or: [{ name }], // check more than 1 field  using $or : [{1},{2},...]
   });
 
   if (existedService) {
@@ -161,12 +162,13 @@ const createService = asyncHandler(async (req, res) => {
   const serviceImageLocalPath = req?.file?.path || ""; // req.file comes from multer
 
   if (!serviceImageLocalPath) {
+    console.log(serviceImage)
     throw new ApiError(400, "ServiceImage file is required !");
   }
 
-  const serviceImage = await uploadOnCloudinary(serviceImageLocalPath); // using await to wait until upload successfull
+  const serviceImages = await uploadOnCloudinary(serviceImageLocalPath); // using await to wait until upload successfull
 
-  if (!serviceImage?.url) {
+  if (!serviceImages?.url) {
     throw new ApiError(400, "Avatar file is required !");
   }
 
@@ -178,7 +180,7 @@ const createService = asyncHandler(async (req, res) => {
     isActive,
     category,
     vehicleType,
-    serviceImage: serviceImage?.url,
+    serviceImage: serviceImages?.url,
   });
 
   const createdService = await Service.findById(services._id);

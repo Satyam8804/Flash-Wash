@@ -1,163 +1,162 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchAllService, scheduleService } from "../utils/service";
-
-
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
 import { Link, Outlet, useNavigate } from "react-router-dom";
-const ServiceDashBoard = () => {
-    const navigate=useNavigate()
-    const [allService,setAllService]=useState([])
-    const loginStatus=localStorage.getItem('isLoggedIn');
-    const[status,setStatus]=useState(loginStatus)
-    useEffect(()=>{
-      setStatus(loginStatus)
-    },[loginStatus])
-    console.log('logi',loginStatus)
-    const getData=async()=>{
-        const res = await fetchAllService()
-        setAllService(res)
-    }
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-    const postAppointment=async()=>{
-      const res = await scheduleService()
-      if(res===true){
-        handleClose();
-      }else{
-        alert(res)
-        handleClose();
-      }
-    }
-    useEffect(()=>{
-        getData()
-    },[])
+const ServiceDashboard = () => {
+    const navigate = useNavigate();
+    const [allService, setAllService] = useState([]);
+    const loginStatus = localStorage.getItem('isLoggedIn');
+    const [status, setStatus] = useState(loginStatus);
 
+    
+    useEffect(() => {
+        setStatus(loginStatus);
+    }, [loginStatus]);
+
+    console.log('login', loginStatus);
+
+    const getData = async () => {
+        const res = await fetchAllService();
+        setAllService(res);
+    };
+
+    const postAppointment = async () => {
+        const res = await scheduleService();
+        if (res === true) {
+            handleClose();
+        } else {
+            alert(res);
+            handleClose();
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     const [show, setShow] = useState(false);
+    const handleClose = () => { setShow(false); window.location.reload(); };
+    const handleShow = () => setShow(true);
 
-  const handleClose = () => {setShow(false);window.location.reload()};
-  const handleShow = () => setShow(true);
+    const [scheduleDate, setScheduleDate] = useState(new Date());
+    const [address, setAddress] = useState('');
+    const [notes, setNotes] = useState('');
+    const currentServiceId = useRef(null);
+    const price = useRef(null);
 
-  const [scheduleDate, setScheduleDate] = useState(new Date());
-  const [address, setAddress] = useState('');
-  const [notes, setNotes] = useState('');
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log('Submitted:', scheduleDate, address, notes);
+        if (status.trim() === "true") {
+            const res = await scheduleService(currentServiceId.current, scheduleDate, address, notes);
+            if (res === true) {
+                alert(price.current)
+                navigate('/checkout',{ state: { price: price.current } });
+            } else {
+                alert(price.current)
+                // toast.success("Appointment added successfully")
+                navigate('/checkout',{ state: { price: price.current } });
+            }
+        } else {
+            toast.error("Please Login to continue");
+        }
+    };
 
-  const currentServiceId=useRef(null)
-
-  const handleSubmit = async (event) => {
-    // event.preventDefault();
-    // Handle form submission logic here (e.g., send data to server)
-    console.log('Submitted:', scheduleDate, address, notes);
-    if(status.trim()==="true"){
-      const res = await scheduleService(currentServiceId.current,scheduleDate,address,notes)
-      if(res===true){
-        
-        navigate('/checkout')
-      }else{
-        //toast.success("Appointment added successfully")
-        navigate('/checkout')
-      }
-    }else{
-      toast.error("Please Login to continue")
-    }
-    
-    //postAppointment(currentServiceId.current,scheduleDate,address,notes)
-    //handleClose(); // Close the modal after submission
-  };
-  return (
-    <div>
-      <div class="row">
-       {allService!=="error" && allService.length>0 && allService.map((ele)=>{
-             return <div key={ele._id} class="col-sm-6 mb-3 mb-sm-0">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">{ele.name}</h5>
-                <img src={ele.serviceImage} />
-                <p class="card-text">
-                  {ele.description}
-                </p>
-                <p class="card-text">
-                  Price -: ₹{ele.price}
-                </p>
-                <p class="card-text">
-                  Category -: {ele.category}
-                </p>
-                <p class="card-text">
-                VehicleType -: {ele.vehicleType}
-                </p>
-                <a onClick={()=>{
-                  console.log("inside login",status)
-                  if(status.trim()==="true"){
-                    handleShow();
-                  }else{
-                    toast.error("Please login to continue")
-                  }
-                  
-                  currentServiceId.current=ele._id
-                  }} class="btn btn-primary">
-                  Book Now
-                </a>
-              </div>
+    return (
+        <div className="w-full px-8 py-8 bg-slate-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {allService !== "error" && allService.length > 0 && allService.map((ele) => (
+                    <div key={ele._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch" />
+                        <div className="p-6">
+                            <h5 className="font-bold text-lg mb-2">{ele.name}</h5>
+                            <p className="text-gray-700 mb-2"><strong>Description:</strong> {ele.description}</p>
+                            <p className="text-gray-700 mb-2"><strong>Price:</strong> ₹{ele.price}</p>
+                            <p className="text-gray-700 mb-2"><strong>Category:</strong> {ele.category}</p>
+                            <p className="text-gray-700 mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
+                            <button
+                                onClick={() => {
+                                    if (status.trim() === "true") {
+                                        handleShow();
+                                    } else {
+                                        toast.error("Please login to continue");
+                                    }
+                                    currentServiceId.current = ele._id;
+                                    price.current = ele.price
+                                }}
+                                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                            >
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
-  
             
-  
-          </div>
-       }) }
-
-        
-      </div>
-      <Modal backdrop="static"
-        keyboard={false}  show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Schedule Appointment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="scheduleDate">
-              <Form.Label>Schedule Date</Form.Label><br/>
-              <DatePicker
-                selected={scheduleDate}
-                onChange={(date) => setScheduleDate(date)}
-                dateFormat="yyyy-MM-dd" // Set your desired date format
-              />
-            </Form.Group>
-            <Form.Group controlId="address">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="notes">
-              <Form.Label>Notes</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="Enter Notes"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary-buttom" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary-button" type="submit" onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-  );
+            {show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                    <div className="bg-white rounded-lg overflow-hidden w-full max-w-md">
+                        <div className="px-4 py-2 bg-gray-800 text-white">
+                            <h3 className="font-semibold">Schedule Appointment</h3>
+                        </div>
+                        <div className="p-4">
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-4">
+                                    <label htmlFor="scheduleDate" className="block text-gray-700 font-bold mb-2">Schedule Date</label>
+                                    <DatePicker
+                                        selected={scheduleDate}
+                                        onChange={(date) => setScheduleDate(date)}
+                                        dateFormat="yyyy-MM-dd" // Set your desired date format
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="address" className="block text-gray-700 font-bold mb-2">Address</label>
+                                    <input
+                                        type="text"
+                                        id="address"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        placeholder="Enter Address"
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="notes" className="block text-gray-700 font-bold mb-2">Notes</label>
+                                    <textarea
+                                        id="notes"
+                                        rows={3}
+                                        value={notes}
+                                        onChange={(e) => setNotes(e.target.value)}
+                                        placeholder="Enter Notes"
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    ></textarea>
+                                </div>
+                                <div className="flex justify-end">
+                                    <button
+                                        type="button"
+                                        onClick={handleClose}
+                                        className="mr-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 };
 
-export default ServiceDashBoard;
+export default ServiceDashboard;
