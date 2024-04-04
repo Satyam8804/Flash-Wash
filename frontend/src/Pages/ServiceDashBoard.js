@@ -54,11 +54,13 @@ const ServiceDashboard = () => {
             const res = await scheduleService(currentServiceId.current, scheduleDate, address, notes);
             if (res === true) {
                 alert(price.current)
-                navigate('/checkout',{ state: { price: price.current } });
+               // navigate('/checkout',{ state: { price: price.current } });
+               navigate('/api/v1/users/profile/appointment')
             } else {
                 alert(price.current)
                 // toast.success("Appointment added successfully")
-                navigate('/checkout',{ state: { price: price.current } });
+                //navigate('/checkout',{ state: { price: price.current } });
+                navigate('/api/v1/users/profile/appointment')
             }
         } else {
             toast.error("Please Login to continue");
@@ -73,8 +75,15 @@ const ServiceDashboard = () => {
                         <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch" />
                         <div className="p-6">
                             <h5 className="font-bold text-lg mb-2">{ele.name}</h5>
-                            <p className="text-gray-700 mb-2"><strong>Description:</strong> {ele.description}</p>
+                            <p className="text-gray-700 mb-2"><strong>Description:</strong>
+                             <ul >
+                                {ele?.description?.split(",").map((services,idx)=>(
+                                    <li>{services}</li>
+                                ))}
+                                </ul>
+                             </p>
                             <p className="text-gray-700 mb-2"><strong>Price:</strong> ₹{ele.price}</p>
+                            <p className="text-gray-700 mb-2"><strong>Hours:</strong> {ele.duration}</p>
                             <p className="text-gray-700 mb-2"><strong>Category:</strong> {ele.category}</p>
                             <p className="text-gray-700 mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
                             <button

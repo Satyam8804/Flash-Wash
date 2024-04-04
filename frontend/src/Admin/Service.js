@@ -92,7 +92,7 @@ const Service = () => {
                 <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" onClick={openModal}>Add Service</button>
             </div>
             <div className='flex flex-wrap w-full h-full overflow-y-auto max-h-[510px] gap-14'>
-                {service && service.map((service) => (
+                {service.length >0 && service.map((service) => (
                     <ServiceCard service={service} key={service._id} />
                 ))}
             </div>

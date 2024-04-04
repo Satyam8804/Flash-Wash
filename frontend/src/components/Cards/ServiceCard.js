@@ -31,7 +31,14 @@ const ServiceCard = ({service}) => {
 
       </div>
       <div className="flex  gap-2">
-      <FaArchive size={40} /><span className="my-2">{service?.description}</span>
+      <FaArchive size={20} />
+      <ul>
+      {
+      service?.description?.split(",").map((services,idx)=>(
+        <li>{services}</li>
+      ))
+}
+      </ul>
       </div>
       
     </div>
