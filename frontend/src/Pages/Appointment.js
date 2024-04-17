@@ -158,26 +158,33 @@ const Appointment = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <p className="text-gray-600">
-                  <strong>Location:</strong>
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[0].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[0].split(":")[1]}
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[1].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[1].split(":")[1]}
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[2].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[2].split(":")[1]}
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[3].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[3].split(":")[1]}
-                </p>
-              </div>
+  <p className="text-gray-600">
+    <strong>Location:</strong>
+  </p>
+  <div className="grid grid-cols-2 gap-4">
+    <div>
+      <p className="text-lg text-gray-800">
+        <strong>{ele?.location?.split(",")[0].split(":")[0]}</strong>:{" "}
+        {ele?.location?.split(",")[0].split(":")[1]}
+      </p>
+      <p className="text-lg text-gray-800">
+        <strong>{ele?.location?.split(",")[1].split(":")[0]}</strong>:{" "}
+        {ele?.location?.split(",")[1].split(":")[1]}
+      </p>
+    </div>
+    <div>
+      <p className="text-lg text-gray-800">
+        <strong>{ele?.location?.split(",")[2].split(":")[0]}</strong>:{" "}
+        {ele?.location?.split(",")[2].split(":")[1]}
+      </p>
+      <p className="text-lg text-gray-800">
+        <strong>{ele?.location?.split(",")[3].split(":")[0]}</strong>:{" "}
+        {ele?.location?.split(",")[3].split(":")[1]}
+      </p>
+    </div>
+  </div>
+</div>
+
               <div>
                 <p className="text-gray-600">
                   <strong>Notes:</strong>

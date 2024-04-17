@@ -28,7 +28,7 @@ const ServiceDashboard = () => {
         if (res === true) {
             handleClose();
         } else {
-            alert(res);
+           // alert(res);
             handleClose();
         }
     };
@@ -62,11 +62,11 @@ const ServiceDashboard = () => {
                 Pincode: ${pincode},
                 state: ${stateValue}`,notes,price.current);
             if (res === true) {
-                alert(price.current)
+                //alert(price.current)
                 navigate('/checkout',{ state: { price: price.current } });
                 //navigate('/api/v1/users/profile/appointment')
             } else {
-                alert(price.current)
+                //alert(price.current)
                 // toast.success("Appointment added successfully")
                 navigate('/checkout',{ state: { price: price.current } });
                 //navigate('/api/v1/users/profile/appointment')
