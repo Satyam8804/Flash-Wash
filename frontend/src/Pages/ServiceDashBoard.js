@@ -79,23 +79,23 @@ const ServiceDashboard = () => {
     return (
         <div className="w-full px-8 py-8 signinDiv">
             <Navbar/>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-16 bg-[#eff8f5a7]">
                 {allService !== "error" && allService.length > 0 && allService.map((ele) => (
-                    <div key={ele._id} className="bg-[#eff8f5a7] shadow-lg overflow-hidden">
-                        <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch" />
+                    <div key={ele._id} className="bg-[#3d3d3d6d] shadow-lg overflow-hidden">
+                        <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch " />
                         <div className="p-6">
                             <h5 className="font-bold text-lg mb-2">{ele.name}</h5>
-                            <p className="text-gray-700 mb-2"><strong>Description:</strong>
+                            <p className="text-white mb-2"><strong>Description:</strong>
                                 <ul >
                                     {ele?.description?.split(",").map((services, idx) => (
                                         <li key={idx}>{services}</li>
                                     ))}
                                 </ul>
                             </p>
-                            <p className="text-gray-700 mb-2"><strong>Price:</strong> ₹{ele.price}</p>
-                            <p className="text-gray-700 mb-2"><strong>Hours:</strong> {ele.duration}</p>
-                            <p className="text-gray-700 mb-2"><strong>Category:</strong> {ele.category}</p>
-                            <p className="text-gray-700 mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
+                            <p className="text-white mb-2"><strong>Price:</strong> ₹{ele.price}</p>
+                            <p className="text-white mb-2"><strong>Hours:</strong> {ele.duration}</p>
+                            <p className="text-white mb-2"><strong>Category:</strong> {ele.category}</p>
+                            <p className="text-white mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
                             <button
                                 onClick={() => {
                                     if (status.trim() === "true") {

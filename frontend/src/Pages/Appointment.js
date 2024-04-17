@@ -98,7 +98,7 @@ const Appointment = () => {
   };
 
   return (
-    <>
+    <div className="flex items-center gap-8">
       {appointment &&
         appointment.map((ele, index) => (
           <div
@@ -106,7 +106,7 @@ const Appointment = () => {
             key={index}
             className="flex items-center space-x-4 mb-4"
           >
-            <div className="w-[300px] bg-white rounded-lg shadow-lg p-6">
+            <div className="w-[400px] h-[500px] bg-white  shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-gray-700">Appointment Details</h3>
                 <img
@@ -208,7 +208,7 @@ const Appointment = () => {
             )}
           </div>
         ))}
-    </>
+    </div>
   );
 };
 

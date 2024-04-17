@@ -5,9 +5,9 @@ import { Link, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 const UserProfile = () => {
   return (
-    <div className="bg-black">
+    <div className="bg-black signinDiv">
       <Navbar />
-      <div className="flex w-full bg-[#ececec] h-full bg-black">
+      <div className="flex w-full h-full">
         {/* Sidebar */}
         <div className="w-[350px] bg-[#1c212a] p-4 m-4 rounded-lg ">
           <ul className="flex flex-col gap-6 font-bold text-white ">
