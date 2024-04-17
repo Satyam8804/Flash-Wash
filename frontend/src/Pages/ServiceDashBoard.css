@@ -1,0 +1,188 @@
+
+.main-container {
+  background-color: #423d55; 
+  min-height: 100vh; 
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: center;
+  align-items: flex-start; /* Align items to the start of the cross axis */
+}
+
+.car-container {
+  flex: 1 1 25%; /* Adjust flex properties to ensure 4 cards per row */
+  max-width: 25%; /* Adjust maximum width to ensure 4 cards per row */
+  padding: 10px; /* Add padding to each card container */
+}
+
+.service-card {
+  position: relative;
+  background-color: #231E39;
+  padding: 20px;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #B3BBCD;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+  margin: 20px;
+}
+
+.service-card::before,
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.service-card::before {
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.service-card::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.service-card:hover::before,
+.service-card:hover::after {
+  opacity: 1;
+}
+
+
+
+
+
+.service-card img{
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  border: .1rem solid #03BFCB;
+  display: block;
+  margin: auto;
+  
+}
+
+.card-name{
+  margin-top: 1.2rem;
+  text-align: center;
+  color: yellow;
+}
+
+.Pricing{
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+}
+.Category{
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+}
+.Vehical{
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+}
+
+.Discription{
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  color: beige;
+
+}
+
+.service-card .buttons{
+  text-align: center;
+  margin: 1rem;
+}
+
+
+.primary {
+  appearance: button;
+  background-color: #106067;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.primary:after {
+  background-clip: padding-box;
+  background-color: #03BFCB;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.primary:main,
+.primary:focus {
+  user-select: auto;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.primary:disabled {
+  cursor: auto;
+}
+
+.primary:active {
+  border-width: 4px 0 0;
+  background: none;
+}
