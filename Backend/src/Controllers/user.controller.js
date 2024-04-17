@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { Service } from "./../Models/services.model.js";
 import { Appointment } from "../Models/appointment.model.js";
 import { Feedback } from "../Models/feedback.model.js";
+import nodemailer from 'nodemailer'
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -425,6 +426,53 @@ const getFeedback = asyncHandler(async (req, res) => {
   }
 });
 
+const sendMail = asyncHandler(async(req, res)=>{
+  
+  const contactEmail = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    auth: {
+      type: "login", // default
+      user: "khansalikaziz787@gmail.com",
+      pass: "kqvdpvifyamjzmvv"
+    },
+  });
+
+
+contactEmail.verify((error) => {
+    if (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: "Error Sending email",
+        error: error.message,
+      });
+    } else {
+      console.log("Ready to Send");
+    }
+  });
+    const name = req.body.name
+    const email = req.body.email;
+    const message = req.body.message;
+    const phone = req.body.phone;
+    const mail = {
+      from: name,
+      to: "khansalikaziz787@gmail.com",
+      subject: "Contact Form Submission - Portfolio",
+      html: `<p>Name: ${name}</p>
+             <p>Email: ${email}</p>
+             <p>Phone: ${phone}</p>
+             <p>Message: ${message}</p>`,
+    };
+    contactEmail.sendMail(mail, (error) => {
+      if (error) {
+        res.json(error);
+      } else {
+        res.json({ code: 200, status: "Message Sent" });
+      }
+    });
+  });
+
+
 export {
   registerUser,
   loginUser,
@@ -437,6 +485,7 @@ export {
   bookAppointment,
   getAppointments,
   getFeedback,
+  sendMail
 };
 
 //signUp

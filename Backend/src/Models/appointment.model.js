@@ -30,6 +30,11 @@ const appointmentSchema = new Schema({
   notes: {
     type: String,
   },
+  employee: {
+    type: Schema.Types.ObjectId,
+    ref: 'Employee', 
+    default: null 
+},
 }, { timestamps: true });
 
 export const Appointment = mongoose.model('Appointment', appointmentSchema);

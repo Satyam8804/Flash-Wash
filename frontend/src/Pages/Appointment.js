@@ -4,7 +4,7 @@ import FeedbackForm from "../Template/FeedbackForm";
 const Appointment = () => {
   const [appointment, setAppointment] = useState(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  console.log(appointment);
+  // console.log(appointment);
 
   useEffect(() => {
     fetchAppointMent();
@@ -22,7 +22,7 @@ const Appointment = () => {
           },
         }
       );
-        console.log(response)
+        // console.log(response)
       if (response.ok) {
         const data = await response.json();
         setAppointment(data?.data);
@@ -45,7 +45,7 @@ const Appointment = () => {
   const accessToken = localStorage.getItem('accessToken')
   const handleFeedbackSubmit = async(formData)=>{
     const appointmentId = appointment?._id;
-    console.log(formData)
+    // console.log(formData)
 
     try {
       const response = await fetch('http://localhost:8000/api/v1/users/feedback',{
@@ -62,7 +62,7 @@ const Appointment = () => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
     } else {
       console.error("Error updating user profile:", response.statusText);
     }
