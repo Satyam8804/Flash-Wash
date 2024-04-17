@@ -12,7 +12,6 @@ const ServiceDashboard = () => {
     const loginStatus = localStorage.getItem('isLoggedIn');
     const [status, setStatus] = useState(loginStatus);
 
-    
     useEffect(() => {
         setStatus(loginStatus);
     }, [loginStatus]);
@@ -43,23 +42,34 @@ const ServiceDashboard = () => {
     const handleShow = () => setShow(true);
 
     const [scheduleDate, setScheduleDate] = useState(new Date());
-    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [landmark, setLandmark] = useState('');
+    const [pincode, setPincode] = useState('');
     const [notes, setNotes] = useState('');
+    const stateValue = "Punjab"; // State value, assuming Punjab is prefilled
+
     const currentServiceId = useRef(null);
     const price = useRef(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Submitted:', scheduleDate, address, notes);
+        console.log('Submitted:', scheduleDate, city, landmark, pincode, stateValue, notes);
+        // Check login status
         if (status.trim() === "true") {
-            const res = await scheduleService(currentServiceId.current, scheduleDate, address, notes);
+            const res = await scheduleService(currentServiceId.current, scheduleDate, 
+                `City: ${city},
+                Landmark: ${landmark},
+                Pincode: ${pincode},
+                state: ${stateValue}`,notes,price.current);
             if (res === true) {
                 alert(price.current)
                 navigate('/checkout',{ state: { price: price.current } });
+                //navigate('/api/v1/users/profile/appointment')
             } else {
                 alert(price.current)
                 // toast.success("Appointment added successfully")
                 navigate('/checkout',{ state: { price: price.current } });
+                //navigate('/api/v1/users/profile/appointment')
             }
         } else {
             toast.error("Please Login to continue");
@@ -75,10 +85,17 @@ const ServiceDashboard = () => {
                         <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch " />
                         <div className="p-6">
                             <h5 className="font-bold text-lg mb-2">{ele.name}</h5>
-                            <p className=" mb-2"><strong>Description:</strong> {ele.description}</p>
-                            <p className=" mb-2"><strong>Price:</strong> ₹{ele.price}</p>
-                            <p className=" mb-2"><strong>Category:</strong> {ele.category}</p>
-                            <p className=" mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
+                            <p className="text-white mb-2"><strong>Description:</strong>
+                                <ul >
+                                    {ele?.description?.split(",").map((services, idx) => (
+                                        <li key={idx}>{services}</li>
+                                    ))}
+                                </ul>
+                            </p>
+                            <p className="text-white mb-2"><strong>Price:</strong> ₹{ele.price}</p>
+                            <p className="text-white mb-2"><strong>Hours:</strong> {ele.duration}</p>
+                            <p className="text-white mb-2"><strong>Category:</strong> {ele.category}</p>
+                            <p className="text-white mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
                             <button
                                 onClick={() => {
                                     if (status.trim() === "true") {
@@ -97,15 +114,15 @@ const ServiceDashboard = () => {
                     </div>
                 ))}
             </div>
-            
+
             {show && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                    <div className="bg-white rounded-lg overflow-hidden w-full max-w-md">
-                        <div className="px-4 py-2 bg-gray-800 text-white">
-                            <h3 className="font-semibold">Schedule Appointment</h3>
-                        </div>
-                        <div className="p-4">
-                            <form onSubmit={handleSubmit}>
+                <div className="bg-white rounded-lg overflow-y-auto max-h-96 mx-4 my-8 w-full max-w-md">
+                    <div className="px-4 py-2 bg-gray-800 text-white">
+                        <h3 className="font-semibold">Schedule Appointment</h3>
+                    </div>
+                    <div className="p-4">
+                        <form onSubmit={handleSubmit}>
                                 <div className="mb-4">
                                     <label htmlFor="scheduleDate" className="block text-gray-700 font-bold mb-2">Schedule Date</label>
                                     <DatePicker
@@ -116,14 +133,49 @@ const ServiceDashboard = () => {
                                     />
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="address" className="block text-gray-700 font-bold mb-2">Address</label>
+                                    <label htmlFor="city" className="block text-gray-700 font-bold mb-2">City</label>
+                                    <select
+                                        id="city"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Select City</option>
+                                        <option value="Jalandhar">Jalandhar</option>
+                                        <option value="Phagwara">Phagwara</option>
+                                        <option value="Kapurthala">Kapurthala</option>
+                                    </select>
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="landmark" className="block text-gray-700 font-bold mb-2">Landmark</label>
                                     <input
                                         type="text"
-                                        id="address"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                        placeholder="Enter Address"
+                                        id="landmark"
+                                        value={landmark}
+                                        onChange={(e) => setLandmark(e.target.value)}
+                                        placeholder="Enter Landmark"
                                         className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="pincode" className="block text-gray-700 font-bold mb-2">Pincode</label>
+                                    <input
+                                        type="number"
+                                        id="pincode"
+                                        value={pincode}
+                                        onChange={(e) => setPincode(e.target.value)}
+                                        placeholder="Enter Pincode"
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="state" className="block text-gray-700 font-bold mb-2">State</label>
+                                    <input
+                                        type="text"
+                                        id="state"
+                                        value={stateValue}
+                                        readOnly
+                                        className="p-2 border rounded-md w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div className="mb-4">
@@ -137,6 +189,7 @@ const ServiceDashboard = () => {
                                         className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     ></textarea>
                                 </div>
+                                
                                 <div className="flex justify-end">
                                     <button
                                         type="button"

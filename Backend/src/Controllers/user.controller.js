@@ -297,7 +297,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 const bookAppointment = asyncHandler(async (req, res) => {
   const currentUser = req.user;
-  const { serviceId, scheduledDate, location, notes } = req.body;
+  const { serviceId, scheduledDate, location, notes, price } = req.body;
   console.log("meri body",req.body)
   try {
     const existingAppointment = await Appointment.findOne({
@@ -328,6 +328,7 @@ const bookAppointment = asyncHandler(async (req, res) => {
       scheduledDate,
       location,
       notes,
+      price
     });
 
     const populatedAppointment = await Appointment.findById(newAppointment._id)

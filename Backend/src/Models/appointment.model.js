@@ -30,6 +30,9 @@ const appointmentSchema = new Schema({
   notes: {
     type: String,
   },
+  price: {
+    type: String,
+  },
   employee: {
     type: Schema.Types.ObjectId,
     ref: 'Employee', 
