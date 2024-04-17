@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Navbar from "../components/Navbar";
 
 const ServiceDashboard = () => {
     const navigate = useNavigate();
@@ -76,10 +77,11 @@ const ServiceDashboard = () => {
     };
 
     return (
-        <div className="w-full px-8 py-8 bg-slate-300">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="w-full px-8 py-8 signinDiv">
+            <Navbar/>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {allService !== "error" && allService.length > 0 && allService.map((ele) => (
-                    <div key={ele._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div key={ele._id} className="bg-[#eff8f5a7] shadow-lg overflow-hidden">
                         <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch" />
                         <div className="p-6">
                             <h5 className="font-bold text-lg mb-2">{ele.name}</h5>
@@ -104,7 +106,7 @@ const ServiceDashboard = () => {
                                     currentServiceId.current = ele._id;
                                     price.current = ele.price
                                 }}
-                                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                                className="bg-[#0f1715a3] hover:bg-[#0f1715] text-white font-bold py-2 px-4 rounded focus:outline-none"
                             >
                                 Book Now
                             </button>

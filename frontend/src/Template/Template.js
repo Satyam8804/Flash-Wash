@@ -5,28 +5,23 @@ import { Link } from "react-router-dom";
 import google from "../assets/google-icon.png";
 import apple from "../assets/apple-icon.png";
 
-
 const Template = ({ title, subTitle, formtype }) => {
-
-
   return (
-    <div className="flex flex-col shadow-lg p-8 bg-white w-[360px] mt-8 justify-center items-center gap-4 backdrop-blur-lg inset-0 ">
-      <div className=" flex flex-col gap-4 justify-center items-center w-full">
+    <div className="flex flex-col shadow-lg p-8 bg-[#acacac86] w-auto justify-center items-center gap-4 backdrop-blur-lg inset-0">
+      <div className=" flex flex-col gap-6 justify-center items-center w-full">
         <div className="w-full">
           <div className="w-full flex flex-col gap-2">
-            <span className="text-3xl font-bold font-lato text-gray-600">{title}</span>
-            <span className="text-gray-500">{subTitle}</span>
+            <span className="text-3xl font-bold font-lato text-white">
+              {title}
+            </span>
+            <span className="text-white">{subTitle}</span>
           </div>
         </div>
 
         <div className=" w-full">
-          {formtype === "signup" ? (
-            <SignUpForm />
-          ) : (
-            <LoginInForm />
-          )}
+          {formtype === "signup" ? <SignUpForm /> : <LoginInForm />}
         </div>
-        <span className="font-bold font-lato  text-sm text-gray-500">OR</span>
+        <span className="font-bold font-lato  text-sm text-white">OR</span>
       </div>
       <div className="flex gap-4">
         <Link to="#" className="span">

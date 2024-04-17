@@ -9,6 +9,8 @@ const Appointment = () => {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
  
  
+  // console.log(appointment);
+
   useEffect(() => {
     fetchAppointment();
   }, []);
@@ -27,6 +29,7 @@ const Appointment = () => {
         }
       );
 
+        // console.log(response)
       if (response.ok) {
         const data = await response.json();
         setAppointment(data?.data);
@@ -51,6 +54,7 @@ const Appointment = () => {
 
   const handleFeedbackSubmit = async (formData) => {
     const appointmentId = appointment?._id;
+    // console.log(formData)
 
     try {
       const response = await fetch(
@@ -68,12 +72,12 @@ const Appointment = () => {
         }
       );
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        console.error("Error updating user profile:", response.statusText);
-      }
+    if (response.ok) {
+      const data = await response.json();
+      // console.log(data);
+    } else {
+      console.error("Error updating user profile:", response.statusText);
+    }
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +108,7 @@ const Appointment = () => {
           >
             <div className="w-[300px] bg-white rounded-lg shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold">Appointment Details</h3>
+                <h3 className="text-xl font-bold text-gray-700">Appointment Details</h3>
                 <img
                   onClick={() => downloadPdf(`${index}`)}
                   src={printIcon}
