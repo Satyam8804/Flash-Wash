@@ -28,7 +28,7 @@ export const fetchAllService = async () => {
 
   const url1 = 'http://localhost:8000/api/v1/users/book-appointment';
 
-  export const scheduleService = async (serviceId, scheduledDate, location, notes) => {
+  export const scheduleService = async (serviceId, scheduledDate, location, notes,price) => {
     try {
       const response = await fetch('http://localhost:8000/api/v1/users/book-appointment',{
         method:"POST",
@@ -41,6 +41,7 @@ export const fetchAllService = async () => {
           scheduledDate,
           location,
           notes,
+          price
         })
     })
 

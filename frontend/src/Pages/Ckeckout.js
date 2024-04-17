@@ -1,34 +1,56 @@
-import React from 'react'
-import { loadStripe } from '@stripe/stripe-js';
-import {
-  Elements,
-} from '@stripe/react-stripe-js';
-import { CheckoutForm } from '../components/CheckoutForm'
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { Link, Outlet, useNavigate,useLocation } from "react-router-dom";
 
-
-
-const options = {
-  mode: 'payment',
-  amount: 1099,
-  currency: 'inr',
-  // Fully customizable with appearance API.
-  appearance: {
-    /*...*/
-  },
-};
 
 const Checkout = (props) => {
-  const stripePromise = loadStripe("pk_test_51LMYEtSE78W1C1HHgFmDfmwFSZlUBhfk083oowtnMdA17qwZuSBQnXL9Bqda6L5iUinGuALPm8LSoYdPhfJQd3Y400wmcII6Co");
-  // import meta.env.VITE_STRIPE_PK is the publishable key you can either directly paste your stripe key here but not recommending if you are planning to upload the code on github as it should remain only available to you or save the key in .env file
   const location = useLocation();
   const { price } = location.state;
-  alert(price)
+  const email =JSON.parse(localStorage.getItem('currentUser')) ;
+  const userEmail=email.user.email;
+  const navigate=useNavigate()
+  const [paymentDetails, setPaymentDetails] = useState({
+    amount: parseInt(price)*100, // Amount in smallest currency unit (e.g., paise for INR)
+    currency: 'INR',
+    name: 'Flash Car Wash',
+    description: 'Payment for car washing service',
+  });
+  
+  const openRazorpayModal = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/razorpay/order', paymentDetails);
+      const { data } = response;
+      const options = {
+        key: data.key,
+        amount: data.amount,
+        currency: data.currency,
+        name: data.name,
+        description: data.description,
+        order_id: data.id,
+        handler: function (response) {
+          console.log(response);
+          // Handle the payment success here, for example, send the payment details to your backend
+          const paymentData = {
+            payment_id: response.razorpay_payment_id,
+            order_id: data.id,
+          };
+          navigate('/api/v1/users/profile/appointment')
+        },
+      };
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(()=>{
+    openRazorpayModal()
+  },[])
   return (
-    <div className='flex container mt-8'>
-      <Elements stripe={stripePromise} options={options}>
-        <CheckoutForm price={price} />
-      </Elements>
+    <div>
+      <h1>Product Purchase</h1>
+      <p>Total Amount: {paymentDetails.amount/100 } {paymentDetails.currency}</p>
+      <button onClick={openRazorpayModal}>Pay Now</button>
     </div>
   )
 }

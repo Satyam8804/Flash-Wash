@@ -30,6 +30,9 @@ const appointmentSchema = new Schema({
   notes: {
     type: String,
   },
+  price: {
+    type: String,
+  },
 }, { timestamps: true });
 
 export const Appointment = mongoose.model('Appointment', appointmentSchema);
