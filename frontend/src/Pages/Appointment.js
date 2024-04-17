@@ -77,7 +77,7 @@ const Appointment = () => {
   return (
     <>
     {appointment && appointment.map((ele)=><><div className='w-[300px] bg-white rounded-lg shadow-lg p-6'>
-  <h3 className='text-xl font-bold mb-4'>Appointment Details</h3>
+  <h3 className='text-xl font-bold mb-4 text-gray-700'>Appointment Details</h3>
   <div className='grid grid-cols-2 gap-4 mb-4'>
     <div>
       <p className='text-gray-600'><strong>Service:</strong></p>
