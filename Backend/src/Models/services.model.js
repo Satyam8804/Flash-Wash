@@ -34,11 +34,11 @@ const serviceSchema = new Schema({
     },
     category:{
         type:String,
-        enum:['Exterior Wash','Interior wash'], 
+        enum:['Exterior Wash','Interior Wash'], 
     },
     vehicleType:{
         type:String,
-        enum:['two-wheeler','four-wheeler','both'],
+        enum:['Two-wheeler','Four-wheeler','both'],
         required:true
     }
 },{timestamps:true})

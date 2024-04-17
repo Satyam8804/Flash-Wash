@@ -30,45 +30,35 @@ const createEmployee = asyncHandler(async (req, res) => {
   // Extract employee details from the request body
   const {
     username,
-    email,
-    fullName,
-    phoneNumber,
-    address,
     position,
     monthlyPays,
-    avatar,
-    password,
   } = req.body;
 
   try {
     // Validate that required fields are present in the request body
-    if (!username || !email || !fullName || !phoneNumber) {
+    if (!username || !position || !monthlyPays ) {
       throw new ApiError(
         400,
         "Missing required fields for creating a new user."
       );
     }
 
+
+
     // Check if there is an existing user with the role 'employee'
-    let user = await User.findOne({
-      $or: [{ username }, { email }],
-      role: "employee",
-    });
+    const user = await User.findOne({username : username});
 
-    // If no existing user found, create a new user
-    if (!user) {
-      user = new User({
-        username,
-        email,
-        fullName,
-        phoneNumber,
-        address, // You may adjust this based on your schema
-        role: "employee",
-        password,
-      });
+    if(!user){
+      return res
+      .status(404)
+      .json(
+        new ApiError(404, "No user Found , need to register as user first !")
+      );
+    }
 
-      // Save the user without triggering the pre('save') hook for password hashing
-      await user.save();
+    const employeeFound = Employee.findOne({user:user._id})
+    if(employeeFound){
+      throw  new ApiError(403, "Employee Already registered !!")
     }
 
     // Create a new employee using the found or created user's ObjectId
@@ -76,30 +66,21 @@ const createEmployee = asyncHandler(async (req, res) => {
       user: user._id,
       position,
       monthlyPays,
-      avatar,
     });
 
-    // Respond with the created employee details
+    const modifiedUser = await User.findById(user?._id)
+    modifiedUser.role = 'employee';
+    await modifiedUser.save();
+
     return res
       .status(201)
       .json(
         new ApiResponse(201, employee, "Employee registered successfully!")
       );
+
+      
   } catch (error) {
     console.error("Error registering employee:", error.message);
-
-    // Handle unique constraint violation
-    if (error.code === 11000) {
-      throw new ApiError(
-        400,
-        "Duplicate email or username. Please use a different email or username."
-      );
-    }
-
-    // Handle validation errors
-    if (error.name === "ValidationError") {
-      throw new ApiError(400, error.message);
-    }
 
     throw new ApiError(500, "Internal Server Error");
   }
@@ -136,6 +117,7 @@ const createService = asyncHandler(async (req, res) => {
   const {
     name,
     description,
+    serviceImage,
     price,
     duration,
     isActive,
@@ -144,7 +126,7 @@ const createService = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (
-    [name, description, price, duration, isActive, category, vehicleType].some(
+    [name,serviceImage ,description, price, duration, isActive, category, vehicleType].some(
       (field) => field?.trim() === ""
     )
   ) {
@@ -152,7 +134,7 @@ const createService = asyncHandler(async (req, res) => {
   }
 
   const existedService = await Service.findOne({
-    $or: [{ name }, { category }], // check more than 1 field  using $or : [{1},{2},...]
+    $or: [{ name }], // check more than 1 field  using $or : [{1},{2},...]
   });
 
   if (existedService) {
@@ -161,12 +143,13 @@ const createService = asyncHandler(async (req, res) => {
   const serviceImageLocalPath = req?.file?.path || ""; // req.file comes from multer
 
   if (!serviceImageLocalPath) {
+    console.log(serviceImage)
     throw new ApiError(400, "ServiceImage file is required !");
   }
 
-  const serviceImage = await uploadOnCloudinary(serviceImageLocalPath); // using await to wait until upload successfull
+  const serviceImages = await uploadOnCloudinary(serviceImageLocalPath); // using await to wait until upload successfull
 
-  if (!serviceImage?.url) {
+  if (!serviceImages?.url) {
     throw new ApiError(400, "Avatar file is required !");
   }
 
@@ -178,7 +161,7 @@ const createService = asyncHandler(async (req, res) => {
     isActive,
     category,
     vehicleType,
-    serviceImage: serviceImage?.url,
+    serviceImage: serviceImages?.url,
   });
 
   const createdService = await Service.findById(services._id);
@@ -241,15 +224,13 @@ const getAllAppointment = asyncHandler(async(req,res)=>{
 })
 
 
-const updateAppointment = asyncHandler(async(req,res)=>{
+const updateAppointment = asyncHandler(async (req, res) => {
   try {
-    const { _id, isConfirmed, workProgress } = req.body;
+    const { _id, isConfirmed, workProgress, employee } = req.body;
 
-    console.log(_id , isConfirmed ,workProgress)
-
+    console.log("req body  --> ",req.body)
+    // Find the appointment by ID
     const appointment = await Appointment.findById(_id);
-
-    console.log(appointment)
 
     if (!appointment) {
       return res.status(404).json({
@@ -258,9 +239,16 @@ const updateAppointment = asyncHandler(async(req,res)=>{
       });
     }
 
-    if (isConfirmed) {
+    // Check if the appointment is confirmed before updating work progress
+    if (isConfirmed || !employee) {
+      // If appointment is confirmed or no employee is assigned, update appointment fields
       appointment.isConfirmed = isConfirmed;
       appointment.workProgress = workProgress;
+      
+      // If employee is provided, assign the appointment to that employee
+      if (employee) {
+        appointment.employee = employee;
+      }
 
       await appointment.save();
 
@@ -282,6 +270,9 @@ const updateAppointment = asyncHandler(async(req,res)=>{
       message: 'Error updating appointment',
     });
   }
-})
+});
+
+
+
 
 export { getAllUsersDetails, getAllEmployees, createEmployee, createService , getAllService ,getAllAppointment ,updateAppointment};

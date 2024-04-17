@@ -1,15 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaBusinessTime } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 const AppointmentCard = ({ appointment, accessToken }) => {
   const [updatedAppointment, setUpdatedAppointment] = useState(appointment);
   const [isSaving, setIsSaving] = useState(false);
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
-  console.log(updatedAppointment);
+  console.log(selectedEmployee)
+
+  // console.log(updatedAppointment);
+
+
+    // Fetch all employees from the backend
+    useEffect(() => {
+      const fetchEmployees = async () => {
+        try {
+          const response = await fetch("http://localhost:8000/api/v1/admin/get-all-employees", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${JSON.parse(accessToken)}`,
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data?.data)
+            setEmployees(data?.data);
+          } else {
+            console.error("Failed to fetch employees");
+          }
+        } catch (error) {
+          console.error("Error fetching employees:", error.message);
+        }
+      };
+  
+      fetchEmployees();
+    }, [accessToken]);
 
   const handleUpdate = async (appointmentId, updatedFields) => {
     try {
+      console.log(updatedFields)
       const response = await fetch(
         "http://localhost:8000/api/v1/admin/update-appointment",
         {
@@ -18,9 +50,17 @@ const AppointmentCard = ({ appointment, accessToken }) => {
             Authorization: `Bearer ${JSON.parse(accessToken)}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedAppointment),
+          body: JSON.stringify({
+            _id: appointmentId,
+            ...updatedFields,
+          }),
         }
       );
+
+      console.log({
+        _id: appointmentId,
+        ...updatedFields, // Include other updated fields
+      })
 
       if (response.ok) {
         const data = await response.json();
@@ -37,14 +77,16 @@ const AppointmentCard = ({ appointment, accessToken }) => {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-
-      // Only send fields that have been modified
       const updatedFields = {};
       if (updatedAppointment.isConfirmed !== appointment.isConfirmed) {
         updatedFields.isConfirmed = updatedAppointment.isConfirmed;
       }
       if (updatedAppointment.workProgress !== appointment.workProgress) {
         updatedFields.workProgress = updatedAppointment.workProgress;
+      }
+
+      if (selectedEmployee !== appointment.employee) {
+        updatedFields.employee = selectedEmployee;
       }
 
       // Send the update if there are changes
@@ -70,21 +112,21 @@ const AppointmentCard = ({ appointment, accessToken }) => {
           className="w-16 h-16 rounded-[50%] border-2 transfrom brightness-125 object-fill"
         />
         <span className="text-lg font-bold">
-          {appointment.user.fullName}
+          {appointment?.user?.fullName}
         </span>
         <div className="flex gap-2 items-center text-w">
           <FaPhoneAlt />
           <span className="text-md">
-            {appointment.user.phoneNumber}
+            {appointment?.user?.phoneNumber}
           </span>
         </div>
       </div>
       <p className="text-2xl font-extrabold">
-        {appointment.service.name}
+        {appointment?.service?.name}
       </p>
       <div className="flex gap-2 items-center">
         <FaBusinessTime />
-        <span>{new Date(appointment.scheduledDate).toLocaleDateString()}</span>
+        <span>{new Date(appointment?.scheduledDate).toLocaleDateString()}</span>
       </div>
 
       <div className="flex gap-2 items-center">
@@ -92,6 +134,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
       <span>{appointment?.location}</span>
       </div>
       {/* Editable Fields */}
+
       <div className="flex items-center gap-2">
         <label className="">Confirmed:</label>
         <input
@@ -124,6 +167,22 @@ const AppointmentCard = ({ appointment, accessToken }) => {
           <option value="Completed">Completed</option>
         </select>
       </div>
+      <div className="flex items-center gap-2 mb-2">
+        <label className="mr-2">Assign Employee:</label>
+        <select
+          value={selectedEmployee}
+          onChange={(e) => setSelectedEmployee(e.target.value)}
+          className="px-2 py-1 rounded cursor-pointer text-gray-500"
+        >
+          <option>Select Employee</option>
+          {employees.length >0 && employees.map((employee) => (
+            <option key={employee?._id} value={employee?._id}>
+              {employee?.user?.fullName}
+            </option>
+          ))}
+        </select>
+      </div>
+
 
       {/* Save Changes Button */}
       <button

@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { FaBell } from "react-icons/fa";
 import { GrAnalytics } from "react-icons/gr";
-import { FaBusinessTime } from "react-icons/fa6";
+import { FaBusinessTime, FaRegCircleXmark } from "react-icons/fa6";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { MdOutlineSettings } from "react-icons/md";
 import { GrUserWorker } from "react-icons/gr";
@@ -58,10 +58,18 @@ const Dashboard = () => {
                   <span>Employees</span>
                 </li>
                 </Link>
+                <Link to={'customers'}>
                 <li className="list-none cursor-pointer  flex gap-2">
                   <FaRegCircleUser color="white" size={24} />
                   <span>Customers</span>
                 </li>
+                </Link>
+                <Link to={'service'}>
+                <li className="list-none cursor-pointer  flex gap-2">
+                  <FaRegCircleXmark color="white" size={24} />
+                  <span>Services</span>
+                </li>
+                </Link>
                 <li className="list-none cursor-pointer  flex gap-2">
                   <MdOutlineSettings color="white" size={24} />
                   <span>Settings</span>

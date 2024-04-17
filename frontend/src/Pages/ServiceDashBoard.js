@@ -1,211 +1,217 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchAllService, scheduleService } from "../utils/service";
+import { toast } from 'react-hot-toast';
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Navbar from "../components/Navbar";
 
-import "react-datepicker/dist/react-datepicker.css";
-import { toast } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-import "./ServiceDashBoard.css";
+const ServiceDashboard = () => {
+    const navigate = useNavigate();
+    const [allService, setAllService] = useState([]);
+    const loginStatus = localStorage.getItem('isLoggedIn');
+    const [status, setStatus] = useState(loginStatus);
 
-const ServiceDashBoard = () => {
-  const navigate = useNavigate();
-  const [allService, setAllService] = useState([]);
-  const loginStatus = localStorage.getItem("isLoggedIn");
-  const [status, setStatus] = useState(loginStatus);
+    useEffect(() => {
+        setStatus(loginStatus);
+    }, [loginStatus]);
 
-  useEffect(() => {
-    setStatus(loginStatus);
-  }, [loginStatus]);
-  console.log("logi", loginStatus);
-  const getData = async () => {
-    const res = await fetchAllService();
-    setAllService(res);
-  };
+    console.log('login', loginStatus);
 
-  const postAppointment = async () => {
-    const res = await scheduleService();
-    if (res === true) {
-      handleClose();
-    } else {
-      alert(res);
-      handleClose();
-    }
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+    const getData = async () => {
+        const res = await fetchAllService();
+        setAllService(res);
+    };
 
-  const [show, setShow] = useState(false);
+    const postAppointment = async () => {
+        const res = await scheduleService();
+        if (res === true) {
+            handleClose();
+        } else {
+            alert(res);
+            handleClose();
+        }
+    };
 
-  const handleClose = () => {
-    setShow(false);
-    window.location.reload();
-  };
-  const handleShow = () => setShow(true);
+    useEffect(() => {
+        getData();
+    }, []);
 
-  const [scheduleDate, setScheduleDate] = useState(new Date());
-  const [address, setAddress] = useState("");
-  const [notes, setNotes] = useState("");
+    const [show, setShow] = useState(false);
+    const handleClose = () => { setShow(false); window.location.reload(); };
+    const handleShow = () => setShow(true);
 
-  const currentServiceId = useRef(null);
+    const [scheduleDate, setScheduleDate] = useState(new Date());
+    const [city, setCity] = useState('');
+    const [landmark, setLandmark] = useState('');
+    const [pincode, setPincode] = useState('');
+    const [notes, setNotes] = useState('');
+    const stateValue = "Punjab"; // State value, assuming Punjab is prefilled
 
-  const handleSubmit = async (event) => {
-    // event.preventDefault();
-    // Handle form submission logic here (e.g., send data to server)
-    console.log("Submitted:", scheduleDate, address, notes);
-    if (status.trim() === "true") {
-      const res = await scheduleService(
-        currentServiceId.current,
-        scheduleDate,
-        address,
-        notes
-      );
-      if (res === true) {
-        toast.success("Appointment added successfully");
-        navigate("/api/v1/users/profile/appointment");
-      } else {
-        toast.success("Appointment added successfully");
-        navigate("/api/v1/users/profile/appointment");
-      }
-    } else {
-      toast.error("Please Login to continue");
-    }
+    const currentServiceId = useRef(null);
+    const price = useRef(null);
 
-    //postAppointment(currentServiceId.current,scheduleDate,address,notes)
-    //handleClose(); // Close the modal after submission
-  };
-  return (
-    <div>
-      <div className="main-container">
-        {allService !== "error" &&
-          allService.length > 0 &&
-          allService.map((ele) => {
-            return (
-              <div key={ele._id} className="car-container">
-                <div className="service-card">
-                  <h5 className="card-name">{ele.name}</h5>
-                  <img src={ele.serviceImage} alt="img" />
-                  <p className="Discription">{ele.description}</p>
-                  <p className="Pricing">Price -: ₹{ele.price}</p>
-                  <p className="Category">Category -: {ele.category}</p>
-                  <p className="Vehical">VehicleType -: {ele.vehicleType}</p>
-                  <div className="buttons">
-                    <Link
-                      className="primary"
-                      onClick={() => {
-                        console.log("inside login", status);
-                        if (status.trim() === "true") {
-                          handleShow();
-                        } else {
-                          toast.error("Please login to continue");
-                        }
-                        currentServiceId.current = ele._id;
-                      }}
-                    >
-                      Book Now
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
-      <div>
-        {show && (
-          <div className="fixed z-10 inset-0 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-screen">
-              <div className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="px-4 py-3 bg-indigo-600 text-white flex justify-between items-center">
-                  <h5 className="text-xl font-medium">Schedule Appointment</h5>
-                  <button
-                    type="button"
-                    onClick={handleClose}
-                    className="text-gray-200 hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md px-3 py-1"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.707 3.307a1 1 0 00-1.414 0L0 6.014l4.707 2.707a1 1 0 001.414-1.414L2.307 6l2.407-1.293a1 1 0 000-1.414zM11.707 8.707a1 1 0 00-1.414 0L8 11.014l4.707 2.707a1 1 0 001.414-1.414L9.307 12l2.407-1.293a1 1 0 000-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div className="px-4 py-5 flex flex-col space-y-4">
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="scheduleDate"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Schedule Date
-                    </label>
-                    <input
-                      type="date"
-                      id="scheduleDate"
-                      className="mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                      value={scheduleDate}
-                      onChange={(e) => setScheduleDate(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="address"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      id="address"
-                      className="mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Enter Address"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="notes"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Notes
-                    </label>
-                    <textarea
-                      id="notes"
-                      rows="3"
-                      className="mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      placeholder="Enter Notes"
-                    ></textarea>
-                  </div>
-                </div>
-                <div className="px-4 py-3 border-t border-gray-200 flex justify-end items-center">
-                  <button
-                    type="button"
-                    className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md px-4 py-2"
-                    onClick={handleClose}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="ml-4 inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-md focus:outline-none focus:ring-indigo-500"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log('Submitted:', scheduleDate, city, landmark, pincode, stateValue, notes);
+        // Check login status
+        if (status.trim() === "true") {
+            const res = await scheduleService(currentServiceId.current, scheduleDate, 
+                `City: ${city},
+                Landmark: ${landmark},
+                Pincode: ${pincode},
+                state: ${stateValue}`,notes,price.current);
+            if (res === true) {
+                alert(price.current)
+                navigate('/checkout',{ state: { price: price.current } });
+                //navigate('/api/v1/users/profile/appointment')
+            } else {
+                alert(price.current)
+                // toast.success("Appointment added successfully")
+                navigate('/checkout',{ state: { price: price.current } });
+                //navigate('/api/v1/users/profile/appointment')
+            }
+        } else {
+            toast.error("Please Login to continue");
+        }
+    };
+
+    return (
+        <div className="w-full px-8 py-8 signinDiv">
+            <Navbar/>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-16 bg-[#eff8f5a7]">
+                {allService !== "error" && allService.length > 0 && allService.map((ele) => (
+                    <div key={ele._id} className="bg-[#3d3d3d6d] shadow-lg overflow-hidden">
+                        <img src={ele.serviceImage} alt="Service" className="w-full h-48 object-stretch " />
+                        <div className="p-6">
+                            <h5 className="font-bold text-lg mb-2">{ele.name}</h5>
+                            <p className="text-white mb-2"><strong>Description:</strong>
+                                <ul >
+                                    {ele?.description?.split(",").map((services, idx) => (
+                                        <li key={idx}>{services}</li>
+                                    ))}
+                                </ul>
+                            </p>
+                            <p className="text-white mb-2"><strong>Price:</strong> ₹{ele.price}</p>
+                            <p className="text-white mb-2"><strong>Hours:</strong> {ele.duration}</p>
+                            <p className="text-white mb-2"><strong>Category:</strong> {ele.category}</p>
+                            <p className="text-white mb-2"><strong>Vehicle Type:</strong> {ele.vehicleType}</p>
+                            <button
+                                onClick={() => {
+                                    if (status.trim() === "true") {
+                                        handleShow();
+                                    } else {
+                                        toast.error("Please login to continue");
+                                    }
+                                    currentServiceId.current = ele._id;
+                                    price.current = ele.price
+                                }}
+                                className="bg-[#0f1715a3] hover:bg-[#0f1715] text-white font-bold py-2 px-4 rounded focus:outline-none"
+                            >
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+
+            {show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                <div className="bg-white rounded-lg overflow-y-auto max-h-96 mx-4 my-8 w-full max-w-md">
+                    <div className="px-4 py-2 bg-gray-800 text-white">
+                        <h3 className="font-semibold">Schedule Appointment</h3>
+                    </div>
+                    <div className="p-4">
+                        <form onSubmit={handleSubmit}>
+                                <div className="mb-4">
+                                    <label htmlFor="scheduleDate" className="block text-gray-700 font-bold mb-2">Schedule Date</label>
+                                    <DatePicker
+                                        selected={scheduleDate}
+                                        onChange={(date) => setScheduleDate(date)}
+                                        dateFormat="yyyy-MM-dd" // Set your desired date format
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="city" className="block text-gray-700 font-bold mb-2">City</label>
+                                    <select
+                                        id="city"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Select City</option>
+                                        <option value="Jalandhar">Jalandhar</option>
+                                        <option value="Phagwara">Phagwara</option>
+                                        <option value="Kapurthala">Kapurthala</option>
+                                    </select>
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="landmark" className="block text-gray-700 font-bold mb-2">Landmark</label>
+                                    <input
+                                        type="text"
+                                        id="landmark"
+                                        value={landmark}
+                                        onChange={(e) => setLandmark(e.target.value)}
+                                        placeholder="Enter Landmark"
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="pincode" className="block text-gray-700 font-bold mb-2">Pincode</label>
+                                    <input
+                                        type="number"
+                                        id="pincode"
+                                        value={pincode}
+                                        onChange={(e) => setPincode(e.target.value)}
+                                        placeholder="Enter Pincode"
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="state" className="block text-gray-700 font-bold mb-2">State</label>
+                                    <input
+                                        type="text"
+                                        id="state"
+                                        value={stateValue}
+                                        readOnly
+                                        className="p-2 border rounded-md w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="notes" className="block text-gray-700 font-bold mb-2">Notes</label>
+                                    <textarea
+                                        id="notes"
+                                        rows={3}
+                                        value={notes}
+                                        onChange={(e) => setNotes(e.target.value)}
+                                        placeholder="Enter Notes"
+                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    ></textarea>
+                                </div>
+                                
+                                <div className="flex justify-end">
+                                    <button
+                                        type="button"
+                                        onClick={handleClose}
+                                        className="mr-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
 };
 
-export default ServiceDashBoard;
+export default ServiceDashboard;
