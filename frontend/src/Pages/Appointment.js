@@ -98,7 +98,7 @@ const Appointment = () => {
   };
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center gap-8 flex-wrap">
       {appointment &&
         appointment.map((ele, index) => (
           <div

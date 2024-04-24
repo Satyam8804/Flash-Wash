@@ -110,8 +110,8 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <div className="flex gap-4 items-center w-full shadow-md p-4 bg-[#1c212a] rounded-lg ">
+    <div className="flex flex-col gap-4 justify-center items-center w-full">
+      {/* <div className="flex gap-4 items-center w-full shadow-md p-4 bg-[#1c212a] rounded-lg ">
         <span className="text-4xl font-bold text-white font-lato">Profile</span>
         <IoIosArrowForward color="white" size={32} />
         <span className="text-4xl font-bold text-white font-lato ">
@@ -120,9 +120,9 @@ const Profile = () => {
               userData.username[0].toUpperCase() + userData.username.slice(1)
             }`}
         </span>
-      </div>
+      </div> */}
       {/* User Details */}
-      <div className="w-full md:w-1/2">
+      <div className="w-full md:w-1/2 bg-[#1c212acd] rounded-lg shadow-lg p-8">
         {userData ? (
           <div className="w-full">
             <div className="w-full flex mb-4">
@@ -174,6 +174,7 @@ const Profile = () => {
                 </form>
               </div>
             </div>
+            <hr />
 
             {editing ? (
               <form>
@@ -285,7 +286,7 @@ const Profile = () => {
                 </button>
               </form>
             ) : (
-              <div className="bg-white rounded-lg shadow p-3 w-full">
+              <div className="rounded-lg shadow p-3 w-full text-white">
                 <h2 className="text-2xl font-semibold mb-4">
                   Contact Information
                 </h2>
@@ -309,7 +310,7 @@ const Profile = () => {
                 </div>
                 <button
                   onClick={() => setEditing(true)}
-                  className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-md hover:bg-blue-600 transition duration-300"
+                  className="bg-[#171e1fb4] text-white py-2 px-4 mt-4 hover:bg-[#0f1715] transition duration-300"
                 >
                   Edit Profile
                 </button>
@@ -320,7 +321,7 @@ const Profile = () => {
           <p>Loading...</p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
