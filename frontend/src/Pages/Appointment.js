@@ -3,13 +3,23 @@ import FeedbackForm from "../Template/FeedbackForm";
 import printIcon from "./../assets/printer.png";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { fetchAllService } from "../utils/service";
 
 const Appointment = () => {
   const [appointment, setAppointment] = useState(null);
+  const [curAppointment, setCurAppointment] =useState(null)
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
- 
- 
-  // console.log(appointment);
+  const [allService, setAllService] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("All");
+
+  const getData = async () => {
+    const res = await fetchAllService();
+    setAllService(res);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     fetchAppointment();
@@ -19,7 +29,7 @@ const Appointment = () => {
     const accessToken = localStorage.getItem("accessToken");
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/get-appointment",
+        `http://localhost:8000/api/v1/users/get-appointment`,
         {
           method: "GET",
           headers: {
@@ -29,11 +39,10 @@ const Appointment = () => {
         }
       );
 
-        // console.log(response)
       if (response.ok) {
         const data = await response.json();
         setAppointment(data?.data);
-
+        setCurAppointment(data?.data)
       } else {
         console.log("Error fetching Appointment!");
       }
@@ -54,8 +63,6 @@ const Appointment = () => {
 
   const handleFeedbackSubmit = async (formData) => {
     const appointmentId = appointment?._id;
-    // console.log(formData)
-
     try {
       const response = await fetch(
         "http://localhost:8000/api/v1/users/feedback",
@@ -72,12 +79,11 @@ const Appointment = () => {
         }
       );
 
-    if (response.ok) {
-      const data = await response.json();
-      // console.log(data);
-    } else {
-      console.error("Error updating user profile:", response.statusText);
-    }
+      if (response.ok) {
+        const data = await response.json();
+      } else {
+        console.error("Error updating user profile:", response.statusText);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -97,37 +103,66 @@ const Appointment = () => {
       });
   };
 
+  const handleFilterChange = (event) => {
+    if(event.target.value==="All"){
+      fetchAppointment()
+    }
+    setSelectedFilter(event.target.value);
+    console.log(appointment.filter((ele)=>ele?.service?.name===event.target.value))
+    setCurAppointment(appointment.filter((ele)=>ele?.service?.name===event.target.value))
+  };
+
   return (
-    <div className="flex items-center gap-8">
-      {appointment &&
-        appointment.map((ele, index) => (
+    <div className="flex flex-col w-full ">
+<div className="flex items-right gap-4 mb-4  mr-36 justify-end">
+        <span className="text-white"><strong>Filter:</strong></span>
+        <select
+          value={selectedFilter}
+          onChange={handleFilterChange}
+          className="border border-gray-300 rounded-md p-2"
+        >
+          <option value="All">All</option>
+          {allService.map((service, index) => (
+            <option key={index} value={service.name}>
+              {service.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    
+    <div className="flex items-center gap-8 flex-wrap">
+      
+      {curAppointment &&
+        curAppointment.map((ele, index) => (
           <div
             id={`${index}`}
             key={index}
             className="flex items-center space-x-4 mb-4"
           >
-            <div className="w-[400px] h-[500px] bg-white  shadow-lg p-6">
+            <div className="w-[400px] h-[450px] bg-[#eff8f5a7] rounded-md shadow-lg p-6 text-left">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-gray-700">Appointment Details</h3>
+                <h3 className="text-xl font-bold text-black">
+                  Appointment Details
+                </h3>
                 <img
                   onClick={() => downloadPdf(`${index}`)}
                   src={printIcon}
                   alt="print img"
                   height={30}
                   width={30}
-                  style={{cursor:'pointer'}}
+                  style={{ cursor: "pointer" }}
                   className="ml-4"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 text-left">
                 <div>
-                  <p className="text-gray-600">
+                  <p className="text-black">
                     <strong>Service:</strong>
                   </p>
                   <p className="text-lg text-gray-800">{ele?.service?.name}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">
+                  <p className="text-black">
                     <strong>Scheduled Date:</strong>
                   </p>
                   <span>
@@ -137,9 +172,9 @@ const Appointment = () => {
                   </span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4 text-left">
                 <div>
-                  <p className="text-gray-600">
+                  <p className="text-black">
                     <strong>Confirmed:</strong>
                   </p>
                   <p
@@ -151,54 +186,69 @@ const Appointment = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">
+                  <p className="text-black">
                     <strong>Work Progress:</strong>
                   </p>
                   <p className="text-lg text-gray-800">{ele?.workProgress}</p>
                 </div>
               </div>
               <div className="mb-4">
-  <p className="text-gray-600">
-    <strong>Location:</strong>
-  </p>
-  <div className="grid grid-cols-2 gap-4">
-    <div>
-      <p className="text-lg text-gray-800">
-        <strong>{ele?.location?.split(",")[0].split(":")[0]}</strong>:{" "}
-        {ele?.location?.split(",")[0].split(":")[1]}
-      </p>
-      <p className="text-lg text-gray-800">
-        <strong>{ele?.location?.split(",")[1].split(":")[0]}</strong>:{" "}
-        {ele?.location?.split(",")[1].split(":")[1]}
-      </p>
-    </div>
-    <div>
-      <p className="text-lg text-gray-800">
-        <strong>{ele?.location?.split(",")[2].split(":")[0]}</strong>:{" "}
-        {ele?.location?.split(",")[2].split(":")[1]}
-      </p>
-      <p className="text-lg text-gray-800">
-        <strong>{ele?.location?.split(",")[3].split(":")[0]}</strong>:{" "}
-        {ele?.location?.split(",")[3].split(":")[1]}
-      </p>
-    </div>
-  </div>
-</div>
-
-              <div>
-                <p className="text-gray-600">
-                  <strong>Notes:</strong>
+                <p className="text-black">
+                  <strong>Location:</strong>
                 </p>
-                <p className="text-lg text-gray-800">{ele?.notes}</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-left">
+                    <span className="text-gray-800">
+                      <strong>
+                        {ele?.location?.split(",")[0].split(":")[0]}:{" "}
+                      </strong>
+                    </span>
+                    <span className="text-lg text-gray-800">
+                      {ele?.location?.split(",")[0].split(":")[1]}
+                    </span>
+                    <span className="text-gray-800">
+                      <strong>
+                        {ele?.location?.split(",")[1].split(":")[0]}:{" "}
+                      </strong>
+                    </span>
+                    <span className="text-lg text-gray-800">
+                      {ele?.location?.split(",")[1].split(":")[1]}
+                    </span>
+                  </div>
+                  <div className="text-left">
+                    <span className="text-gray-800">
+                      <strong>
+                        {ele?.location?.split(",")[2].split(":")[0]}:{" "}
+                      </strong>
+                    </span>
+                    <span className="text-lg text-gray-800">
+                      {ele?.location?.split(",")[2].split(":")[1]}
+                    </span>
+                    <span className="text-gray-800">
+                      <strong>
+                        {ele?.location?.split(",")[3].split(":")[0]}:{" "}
+                      </strong>
+                    </span>
+                    <span className="text-lg text-gray-800">
+                      {ele?.location?.split(",")[3].split(":")[1]}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-gray-600">
-                  <strong>Amount Paid:</strong>
-                </p>
-              
-                  <p  className="text-lg text-gray-800">{ele?.price}</p>
-               
-                
+
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div>
+                  <span className="text-black">
+                    <strong>Notes:</strong>
+                  </span>
+                  <span className="text-lg text-gray-800">{ele?.notes}</span>
+                </div>
+                <div>
+                  <span className="text-black">
+                    <strong>Amount Paid:</strong>
+                  </span>
+                  <span className="text-lg text-gray-800">{ele?.price}</span>
+                </div>
               </div>
             </div>
             {showFeedbackForm && (
@@ -208,6 +258,7 @@ const Appointment = () => {
             )}
           </div>
         ))}
+    </div>
     </div>
   );
 };
