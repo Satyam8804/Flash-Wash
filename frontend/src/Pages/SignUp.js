@@ -5,7 +5,7 @@ const SignUp = () => {
   return (
     <div className="flex signupDiv pb-8 flex-column">
       <Navbar />
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center p-4">  
         <Template
           title="Register Here"
           subTitle={"Create A New Account"}

@@ -4,7 +4,7 @@ const subscriptionSchema = new Schema({
   type: {
     type: String,
     default: 'standard',
-    enum: ['standard','premium'], //  subscription type 
+    enum: ['standard','premium'],
   },
   price: {
     type: Number,
