@@ -23,6 +23,7 @@ const ServiceDashboard = () => {
     setAllService(res);
   };
 
+<<<<<<< HEAD
   const postAppointment = async () => {
     const res = await scheduleService();
     if (res === true) {
@@ -32,6 +33,17 @@ const ServiceDashboard = () => {
       handleClose();
     }
   };
+=======
+    const postAppointment = async () => {
+        const res = await scheduleService();
+        if (res === true) {
+            handleClose();
+        } else {
+           // alert(res);
+            handleClose();
+        }
+    };
+>>>>>>> 18c8e2f9add7576d8538a290fade2c815005261f
 
   useEffect(() => {
     getData();
