@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchAllService, scheduleService } from "../utils/service";
 import { toast } from 'react-hot-toast';
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Navbar from "../components/Navbar";
+import { SlCalender } from "react-icons/sl";
+import './ServiceDashBoard.css';
 
 const ServiceDashboard = () => {
     const navigate = useNavigate();
@@ -116,20 +118,22 @@ const ServiceDashboard = () => {
             </div>
 
             {show && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                <div className="bg-white rounded-lg overflow-y-auto max-h-96 mx-4 my-8 w-full max-w-md">
-                    <div className="px-4 py-2 bg-gray-800 text-white">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 ">
+                <div className="bg-white rounded-lg  max-h-96 mx-4 my-8 w-full max-w-md overflow-x-hidden modal">
+                    <div className="px-4 py-2 bg-gray-800 text-white h-16 flex items-center justify-center">
                         <h3 className="font-semibold">Schedule Appointment</h3>
                     </div>
                     <div className="p-4">
                         <form onSubmit={handleSubmit}>
                                 <div className="mb-4">
                                     <label htmlFor="scheduleDate" className="block text-gray-700 font-bold mb-2">Schedule Date</label>
+                                    
                                     <DatePicker
                                         selected={scheduleDate}
+                                        showIcon = {<SlCalender/>}
                                         onChange={(date) => setScheduleDate(date)}
                                         dateFormat="yyyy-MM-dd" // Set your desired date format
-                                        className="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="p-2 border text-center text-white bg-[#7f8281af] rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div className="mb-4">

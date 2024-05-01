@@ -11,4 +11,4 @@ const router = express.Router();
 router.route('/info').get(verifyJWT,employeeAuthMiddleware, getEmployeeInfo);
 router.route('/get-assigned-work').get(verifyJWT,employeeAuthMiddleware,getAssignedAppointments)
 
-export default router;
+export default router

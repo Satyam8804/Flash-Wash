@@ -3,17 +3,21 @@ import FeedbackForm from "../Template/FeedbackForm";
 import printIcon from "./../assets/printer.png";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import Modal from "../Template/Modal.js";
 
 const Appointment = () => {
-  const [appointment, setAppointment] = useState(null);
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
- 
- 
-  // console.log(appointment);
+  const [appointments, setAppointments] = useState([]);
+  const [showFeedbackFormIndex, setShowFeedbackFormIndex] = useState([]);
 
   useEffect(() => {
     fetchAppointment();
   }, []);
+  
+
+  useEffect(() => {
+    // Initialize showFeedbackFormIndex with an array of false values
+    setShowFeedbackFormIndex(new Array(appointments.length).fill(false));
+  }, [appointments]);
 
   const fetchAppointment = async () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -29,11 +33,9 @@ const Appointment = () => {
         }
       );
 
-        // console.log(response)
       if (response.ok) {
         const data = await response.json();
-        setAppointment(data?.data);
-
+        setAppointments(data?.data);
       } else {
         console.log("Error fetching Appointment!");
       }
@@ -42,20 +44,10 @@ const Appointment = () => {
     }
   };
 
-  useEffect(() => {
-    if (appointment?.workProgress === "Completed") {
-      setShowFeedbackForm(true);
-    } else {
-      setShowFeedbackForm(false);
-    }
-  }, [appointment]);
-
   const accessToken = localStorage.getItem("accessToken");
 
-  const handleFeedbackSubmit = async (formData) => {
-    const appointmentId = appointment?._id;
-    // console.log(formData)
-
+  const handleFeedbackSubmit = async (formData, index) => {
+    const appointmentId = appointments[index]?._id;
     try {
       const response = await fetch(
         "http://localhost:8000/api/v1/users/feedback",
@@ -72,12 +64,11 @@ const Appointment = () => {
         }
       );
 
-    if (response.ok) {
-      const data = await response.json();
-      // console.log(data);
-    } else {
-      console.error("Error updating user profile:", response.statusText);
-    }
+      if (response.ok) {
+        const data = await response.json();
+      } else {
+        console.error("Error updating user profile:", response.statusText);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -99,108 +90,122 @@ const Appointment = () => {
 
   return (
     <div className="flex items-center gap-8 flex-wrap">
-      {appointment &&
-        appointment.map((ele, index) => (
-          <div
-            id={`${index}`}
-            key={index}
-            className="flex items-center space-x-4 mb-4"
-          >
-            <div className="w-[400px] h-[500px] bg-white  shadow-lg p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-gray-700">Appointment Details</h3>
-                <img
-                  onClick={() => downloadPdf(`${index}`)}
-                  src={printIcon}
-                  alt="print img"
-                  height={30}
-                  width={30}
-                  style={{cursor:'pointer'}}
-                  className="ml-4"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-600">
-                    <strong>Service:</strong>
-                  </p>
-                  <p className="text-lg text-gray-800">{ele?.service?.name}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">
-                    <strong>Scheduled Date:</strong>
-                  </p>
-                  <span>
-                    {new Date(ele?.scheduledDate)
-                      .toLocaleDateString()
-                      .replaceAll("/", "-")}
-                  </span>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <p className="text-gray-600">
-                    <strong>Confirmed:</strong>
-                  </p>
-                  <p
-                    className={`text-lg ${
-                      ele?.isConfirmed ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {ele?.isConfirmed ? "Yes" : "No"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-600">
-                    <strong>Work Progress:</strong>
-                  </p>
-                  <p className="text-lg text-gray-800">{ele?.workProgress}</p>
-                </div>
-              </div>
-              <div className="mb-4">
+      {appointments.map((appointment, index) => (
+        <div
+          id={`${index}`}
+          key={index}
+          className="flex items-center space-x-4 mb-4"
+        >
+          <div className="w-[400px] h-[500px] bg-white  shadow-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-700">
+                Appointment Details
+              </h3>
+              <img
+                onClick={() => downloadPdf(`${index}`)}
+                src={printIcon}
+                alt="print img"
+                height={30}
+                width={30}
+                style={{ cursor: "pointer" }}
+                className="ml-4"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <p className="text-gray-600">
-                  <strong>Location:</strong>
+                  <strong>Service:</strong>
                 </p>
                 <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[0].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[0].split(":")[1]}
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[1].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[1].split(":")[1]}
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[2].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[2].split(":")[1]}
-                </p>
-                <p className="text-lg text-gray-800">
-                  <strong>{ele?.location?.split(",")[3].split(":")[0]}</strong>:{" "}
-                  {ele?.location?.split(",")[3].split(":")[1]}
+                  {appointment?.service?.name}
                 </p>
               </div>
               <div>
                 <p className="text-gray-600">
-                  <strong>Notes:</strong>
+                  <strong>Scheduled Date:</strong>
                 </p>
-                <p className="text-lg text-gray-800">{ele?.notes}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">
-                  <strong>Amount Paid:</strong>
-                </p>
-              
-                  <p  className="text-lg text-gray-800">{ele?.price}</p>
-               
-                
+                <span>
+                  {new Date(appointment?.scheduledDate)
+                    .toLocaleDateString()
+                    .replaceAll("/", "-")}
+                </span>
               </div>
             </div>
-            {showFeedbackForm && (
-              <div className="mt-4">
-                <FeedbackForm onSubmit={handleFeedbackSubmit} />
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <p className="text-gray-600">
+                  <strong>Confirmed:</strong>
+                </p>
+                <p
+                  className={`text-lg ${
+                    appointment?.isConfirmed
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {appointment?.isConfirmed ? "Yes" : "No"}
+                </p>
               </div>
-            )}
+              <div>
+                <p className="text-gray-600">
+                  <strong>Work Progress:</strong>
+                </p>
+                <p className="text-lg text-gray-800">
+                  {appointment?.workProgress}
+                </p>
+              </div>
+            </div>
+            <div className="mb-4">
+              <p className="text-gray-600">
+                <strong>Location:</strong>
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong>
+                  {appointment?.location?.split(",")[0].split(":")[0]}
+                </strong>
+                : {appointment?.location?.split(",")[0].split(":")[1]}
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong>
+                  {appointment?.location?.split(",")[1].split(":")[0]}
+                </strong>
+                : {appointment?.location?.split(",")[1].split(":")[1]}
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong>
+                  {appointment?.location?.split(",")[2].split(":")[0]}
+                </strong>
+                : {appointment?.location?.split(",")[2].split(":")[1]}
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong>
+                  {appointment?.location?.split(",")[3].split(":")[0]}
+                </strong>
+                : {appointment?.location?.split(",")[3].split(":")[1]}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600">
+                <strong>Notes:</strong>
+              </p>
+              <p className="text-lg text-gray-800">{appointment?.notes}</p>
+            </div>
+            <div>
+              <p className="text-gray-600">
+                <strong>Amount Paid:</strong>
+              </p>
+              <p className="text-lg text-gray-800">{appointment?.price}</p>
+            </div>
           </div>
-        ))}
+          {showFeedbackFormIndex[index] && (
+            <Modal onClose={() => setShowFeedbackFormIndex(null)}>
+              <FeedbackForm
+                onSubmit={(formData) => handleFeedbackSubmit(formData, index)}
+              />
+            </Modal>
+          )}
+        </div>
+      ))}
     </div>
   );
 };

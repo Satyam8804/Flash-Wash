@@ -1,0 +1,7 @@
+.modal::-webkit-scrollbar {
+    display: none;
+  }
+  .modal {
+    scrollbar-width: none;
+    overflow-y: auto; 
+    }

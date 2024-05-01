@@ -3,18 +3,54 @@ import { IoCall } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import Navbar from "../components/Navbar";
+import Loader from "../components/Loader";
+import toast from "react-hot-toast";
 const Contact = () => {
+  const [loader, setLoader] = useState(false);
+
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: "",
   });
+  const accessToken = localStorage.getItem('accessToken');
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => { // Make handleSubmit asynchronous
+    setLoader(true)
     event.preventDefault();
-    console.log("Form submitted:", formData);
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/users/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${JSON.parse(accessToken)}`,
+
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if(response.ok){
+        toast.success(data?.message);
+        console.log("Response from server:", data);
+      }else{
+        toast.success(data?.message);
+      }
+      setLoader(false)
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +72,7 @@ const Contact = () => {
                   <IoCall color="white" size={24} />
                   <span>CALL US</span>
                 </div>
-                <phone className="float-start ">+91-6207621814</phone>
+                <phone className="float-start">+91-6207621814</phone>
               </div>
               <div className="pb-2">
                 <div className="flex gap-4">
@@ -113,12 +149,12 @@ const Contact = () => {
                   className="w-full px-3 py-2 rounded-sm border border-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 h-24 resize-none"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full py-2 px-4 bg-[#0f1715] hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-center text-white"
-              >
-                Submit
-              </button>
+              <button type="submit" className="w-full h-8 px-4 text-white border-none bg-[#373737] hover:bg-black mt-8 relative">
+              {loader && (
+                <Loader className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+              )}
+              {!loader && "Submit"}
+            </button>
             </form>
           </div>
         </div>

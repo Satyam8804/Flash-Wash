@@ -216,11 +216,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
+  
   const user = await User.findById(req.user?._id);
   const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
 
   if (!isPasswordCorrect) {
-    throw new ApiError(400, "Invalid old Password");
+    throw new ApiError(406, "Invalid old Password !");
   }
   user.password = newPassword;
   await user.save({ validateBeforeSave: false });
@@ -468,8 +469,10 @@ contactEmail.verify((error) => {
       if (error) {
         res.json(error);
       } else {
-        res.json({ code: 200, status: "Message Sent" });
-      }
+        res.status(201).json({
+          success: true,
+          message: "Email Sent Successfully",
+        });      }
     });
   });
 

@@ -22,7 +22,7 @@ router.route('/logout').post(verifyJWT,logoutUser)  // it first run verifyJWT th
 
 router.route('/refreshToken').post(refreshAccessToken)
 
-router.route('/change-password').post(verifyJWT,changeCurrentPassword)
+router.route('/change-password').patch(verifyJWT,changeCurrentPassword)
 
 router.route('/profile').get(verifyJWT,getCurrentUser)    
 

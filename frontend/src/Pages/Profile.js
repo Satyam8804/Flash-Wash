@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { IoIosArrowForward } from "react-icons/io";
+// import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { useProfile } from "../utils/useProfile";
-import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { FaPhoneAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 const Profile = () => {
   const [editing, setEditing] = useState(false);
@@ -291,8 +291,8 @@ const Profile = () => {
                   Contact Information
                 </h2>
                 <div className="flex flex-col w-full justify-start">
-                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3 text-wrap">
-                    <MdEmail color="black" size={24}/>
+                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3">
+                    <MdEmail color="white" size={20} />
                     <span className="font-semibold text-gray-500">{userData.email}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2  md:w-1/3">

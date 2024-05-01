@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const useProfile = (url) => {
   const [updatedUserData, setUpdatedUserData] = useState(null);
@@ -19,6 +20,7 @@ const useProfile = (url) => {
 
         if (response.ok) {
           const data = await response.json();
+          // console.log(data)
           setUserData(data?.data);
           setUpdatedUserData({ ...data?.data });
         } else {
@@ -27,8 +29,18 @@ const useProfile = (url) => {
         }
       } catch (error) {
         console.error('Error:', error.message);
+        if (error.response.status === 401 && error.response.data.message === 'Session expired') {
+          // Display toast message for session expiration
+          toast('Session has expired. Please log in again.');
+      } else {
+          // Handle other errors
+          console.error('Error:', error.response.data);
+      }
       }
     };
+
+    
+
     fetchProfile();
   }, [url, accessToken]);
 
