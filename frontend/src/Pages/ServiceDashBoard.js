@@ -1,16 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchAllService, scheduleService } from "../utils/service";
-<<<<<<< HEAD
-import { toast } from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-=======
 import { toast } from "react-hot-toast";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
->>>>>>> 20e9b71dfba891be68c738ef41528bd295620a7e
 import Navbar from "../components/Navbar";
 import { SlCalender } from "react-icons/sl";
 import './ServiceDashBoard.css';
@@ -32,17 +25,7 @@ const ServiceDashboard = () => {
     setAllService(res);
   };
 
-<<<<<<< HEAD
-  const postAppointment = async () => {
-    const res = await scheduleService();
-    if (res === true) {
-      handleClose();
-    } else {
-      alert(res);
-      handleClose();
-    }
-  };
-=======
+
     const postAppointment = async () => {
         const res = await scheduleService();
         if (res === true) {
@@ -52,7 +35,7 @@ const ServiceDashboard = () => {
             handleClose();
         }
     };
->>>>>>> 18c8e2f9add7576d8538a290fade2c815005261f
+
 
   useEffect(() => {
     getData();
