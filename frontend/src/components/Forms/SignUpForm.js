@@ -83,7 +83,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex flex-col w-[400px]">
+    <div className="flex flex-col w-auto">
       <form
         className="text-gray-500 text-sm flex flex-col"
         onSubmit={handleSubmit}

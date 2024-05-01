@@ -3,65 +3,89 @@ import Navbar from "../components/Navbar";
 
 const AboutUs = () => {
   return (
-    <div id="aboutDiv">
+    <div id="aboutDiv" className="bg-gray-100 dark:bg-gray">
       <Navbar />
-      <div className="container mx-auto py-12 px-4 md:px-6">
-        <h1 className="text-3xl font-bold mb-4">About Us</h1>
-        <p className="text-gray-500 dark:text-gray-400 mb-6">
-          Flash Wash is a leading cleaning service provider dedicated to
-          ensuring your spaces are spotless and fresh.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="container mx-auto py-12 px-4 md:px-6 ">
+        {/* About Us Details and Image */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* About Us Details */}
           <div>
-            <h2 className="text-xl font-semibold mb-2">Our Mission</h2>
-            <p className="text-gray-500 dark:text-gray-400">
+            <h1 className="mb-6 text-3xl font-extrabold text-gray-500 dark:text-white md:text-5xl lg:text-5xl">
+              <span className="text-transparent bg-clip-text bg-white">
+                About Us
+              </span>
+            </h1>
+            <p className="text-gray-200 dark:text-gray-200 text-left leading-relaxed lg:text-xl">
+              Welcome to Flash Wash, your trusted partner for exceptional
+              cleaning services. We take pride in our work and are dedicated to
+              providing you with a clean and healthy environment. Our team of
+              experienced professionals uses state-of-the-art equipment and
+              eco-friendly cleaning products to ensure your space is not only
+              clean but also safe for you, your family, or your employees.
+            </p>
+          </div>
+
+          {/* Image */}
+          <div className="text-center border-4">
+            <img
+              src="https://wallpapercave.com/wp/wp7395312.jpg"
+              alt="Flash Wash"
+              className="rounded-lg shadow-md mx-auto h-100 w-100 object-cover"
+            />
+          </div>
+        </div>
+
+        <hr className="mt-16"></hr>
+        {/* Mission, Vision, and Values Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-8 mt-20">
+          {/* Mission Card */}
+          <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white p-6">
+            <img
+              src="https://picsum.photos/id/237/300/200"
+              alt="Flash Wash Mission"
+              className="mx-auto mb-4 object-cover"
+            />
+            <h2 className="text-xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-200 ">
+              Our Mission
+            </h2>
+            <p className="text-gray-700 dark:text-gray-200 text-left leading-relaxed">
               Our mission is to provide top-notch cleaning services that exceed
               our customers' expectations, creating a clean and healthy
               environment for all.
             </p>
           </div>
-          <div>
-            <h2 className="text-xl font-semibold mb-2">Our Vision</h2>
-            <p className="text-gray-500 dark:text-gray-400">
+
+          {/* Vision Card */}
+          <div className="rounded-lg shadow-md bg-white p-6">
+            <img
+              src="https://picsum.photos/id/1036/300/200"
+              alt="Flash Wash Vision"
+              className="mx-auto mb-4 object-cover"
+            />
+            <h2 className="text-xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-200">
+              Our Vision
+            </h2>
+            <p className="text-gray-700 dark:text-gray-200 text-left leading-relaxed">
               We envision a world where cleanliness is not just a choice but a
               way of life, promoting well-being and happiness in every space we
               touch.
             </p>
           </div>
-        </div>
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-4">Our Values</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Quality</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                We are committed to delivering the highest quality cleaning
-                services to our clients.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Reliability</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Our team is reliable and dedicated to ensuring your satisfaction
-                with our services.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                Customer Satisfaction
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Customer satisfaction is our top priority, and we strive to
-                exceed expectations.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Innovation</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                We continuously innovate to provide cutting-edge cleaning
-                solutions for our clients.
-              </p>
-            </div>
+
+          {/* Values Card */}
+          <div className="rounded-lg shadow-md bg-white p-6">
+            <img
+              src="https://picsum.photos/id/248/300/200"
+              alt="Flash Wash Values"
+              className="mx-auto mb-4 object-cover"
+            />
+            <h2 className="text-xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-200">
+              Our Values
+            </h2>
+            <ul className="list-disc space-y-2 pl-4 text-gray-700 dark:text-gray-200 text-left leading-relaxed">
+              Quality: We are committed to delivering the highest quality
+              cleaning services to our clients.
+            </ul>
           </div>
         </div>
       </div>
