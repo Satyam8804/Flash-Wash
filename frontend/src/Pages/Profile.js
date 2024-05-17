@@ -48,6 +48,8 @@ const Profile = () => {
 
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem("currentUser", JSON.stringify(data?.data));
+
         setEditing(false);
         console.log(data);
       } else {
@@ -293,15 +295,15 @@ const Profile = () => {
                 <div className="flex flex-col w-full justify-start">
                   <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3">
                     <MdEmail color="white" size={20} />
-                    <span className="font-semibold text-gray-500">{userData.email}</span>
+                    <span className="font-semibold  text-white">{userData.email}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2  md:w-1/3">
                   <FaPhoneAlt size={20}/>
-                    <span className="font-semibold text-gray-500">{userData.phoneNumber}</span>
+                    <span className="font-semibold text-white ">{userData.phoneNumber}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center gap-2">
                   <FaLocationDot size={24}/>
-                    <address className="font-semibold text-gray-500">
+                    <address className="font-semibold text-white">
                       {userData.address.street}, {userData.address.city},{" "}
                       {userData.address.state}, {userData.address.zipcode},{" "}
                       {userData.address.country}

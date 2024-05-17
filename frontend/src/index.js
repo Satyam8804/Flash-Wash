@@ -23,6 +23,7 @@ import Checkout from './Pages/Ckeckout';
 import Customers from './Admin/Customers';
 import Service from './Admin/Service';
 import AssignedWorks from './Employee/AssignedWorks';
+import FeedbackForm from './Template/FeedbackForm';
 
 
 const appRouter = createBrowserRouter([
@@ -73,6 +74,10 @@ const appRouter = createBrowserRouter([
           {
             path:'change-password',
             element:<ChangePassword/>
+          },
+          {
+            path:'feedback',
+            element:<FeedbackForm/>
           }
         ]
       }

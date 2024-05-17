@@ -35,6 +35,14 @@ const UserProfile = () => {
                 Change Password
               </li>
             </Link>
+            <Link to={'feedback'}>
+              <li   
+              name="feedback"
+                className="cursor-pointer hover:bg-gray-500 hover:text-white p-2 rounded-md"
+              >
+                feedback
+              </li>
+            </Link>
           </ul>
         </div>
         <div className=" flex flex-col items-center w-full p-8 ">

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { bookAppointment, changeCurrentPassword, getAppointments, getCurrentUser, getFeedback, loginUser, logoutUser, refreshAccessToken, registerUser, sendMail, updateAccountDetails, updateUserAvatar } from "../Controllers/user.controller.js";
+import { bookAppointment, changeCurrentPassword, getAllFeedbacks, getAppointments, getCurrentUser, getFeedback, loginUser, logoutUser, refreshAccessToken, registerUser, sendMail, updateAccountDetails, updateUserAvatar } from "../Controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from './../middlewares/auth.middleware.js';
 import { getAllService } from "../Controllers/admin.controller.js";
@@ -41,5 +41,6 @@ router.route('/feedback').post(verifyJWT,getFeedback)
 
 router.route('/send-email').post(verifyJWT,sendMail)
 
+router.route('/getAllFeedbacks').get(getAllFeedbacks)
 
 export default router

@@ -1,11 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
 const feedbackSchema = new  Schema({
-    appointment:{
-        type:Schema.Types.ObjectId,
-        ref:'Appointment',
-        required:true,
-    },
     user:{
         type:Schema.Types.ObjectId,
         ref: 'User',

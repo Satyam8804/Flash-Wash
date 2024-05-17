@@ -29,7 +29,7 @@ const Employee = () => {
      }
   return (
     <div>
-      <div className="w-screen h-screen flex flex-row p-4 bg-gradient-to-br from-indigo-900 via-teal-500 to-sky-300 ">
+      <div className="w-screen h-screen flex flex-row p-4 bg-[#ececec]">
         <div className="w-4/12 md:w-2/12 flex flex-col items-center gap-16 bg-[#0f1715] text-white rounded-xl p-2">
           <span className="text-3xl font-bold" id="board-1">
             Employee
