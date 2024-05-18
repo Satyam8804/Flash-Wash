@@ -5,6 +5,8 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Navbar from "../components/Navbar";
+import { SlCalender } from "react-icons/sl";
+import './ServiceDashBoard.css';
 
 const ServiceDashboard = () => {
   const navigate = useNavigate();
@@ -23,15 +25,17 @@ const ServiceDashboard = () => {
     setAllService(res);
   };
 
-  const postAppointment = async () => {
-    const res = await scheduleService();
-    if (res === true) {
-      handleClose();
-    } else {
-      alert(res);
-      handleClose();
-    }
-  };
+
+    const postAppointment = async () => {
+        const res = await scheduleService();
+        if (res === true) {
+            handleClose();
+        } else {
+           // alert(res);
+            handleClose();
+        }
+    };
+
 
   useEffect(() => {
     getData();

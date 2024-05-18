@@ -214,11 +214,11 @@ const SignUpForm = () => {
               </span>
             </div>
             {/* </label> */}
-            <button className="w-full h-8 px-4 text-white border-none bg-[#373737] hover:bg-black mt-8 relative">
+            <button type="submit" className="w-full h-8 px-4 text-white border-none bg-[#373737] hover:bg-black mt-8 relative">
               {loader && (
                 <Loader className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2" />
               )}
-              {!loader && "Register"}
+              {!loader && "Submit"}
             </button>
           </div>
         </div>

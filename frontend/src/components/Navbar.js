@@ -34,18 +34,18 @@ const Navbar = () => {
           <img src={logo} alt="logo" className="w-40 h-32" loading="lazy" />
         </Link>
       </div>
-      <div className={`${showMenu ? "block" : "hidden"} sm:block hidden`}>
+      <div className={`${showMenu ? "block" : "hidden"} sm:block hidden animateBorder` }>
         <ul className="flex gap-16">
-          <li className="text-2xl hover:underline">
+          <li className="text-2xl ">
             <Link to="/">Home</Link>
           </li>
-          <li className="text-2xl hover:underline">
+          <li className="text-2xl ">
             <Link to="/about">About</Link>
           </li>
-          <li className="text-2xl hover:underline">
+          <li className="text-2xl ">
             <Link to="/contact">Contacts</Link>
           </li>
-          <li className="text-2xl hover:underline">
+          <li className="text-2xl ">
             <Link to="/service">Services</Link>
           </li>
         </ul>

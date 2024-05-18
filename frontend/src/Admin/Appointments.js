@@ -37,7 +37,7 @@ const Appointments = () => {
 
 
   return (
-    <div className="flex flex-col w-full ">
+    <div className="flex flex-wrap w-full ">
       <span className="font-bold text-gray-500 text-2xl">APPOINTMENTS ({appointments?.length})</span>
       <div className="appointment flex flex-row-reverse flex-wrap w-full h-full overflow-y-auto max-h-[510px]">
       {appointments &&

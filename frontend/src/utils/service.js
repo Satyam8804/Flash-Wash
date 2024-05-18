@@ -2,6 +2,7 @@
 const accessToken=localStorage.getItem('accessToken');
 const url = 'http://localhost:8000/api/v1/users/get-all-services'
 export const fetchAllService = async () => {
+  
     try {
       const response = await fetch(url, {
         method: 'GET',

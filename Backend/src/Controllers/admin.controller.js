@@ -28,37 +28,31 @@ const getAllUsersDetails = asyncHandler(async (req, res) => {
 // Controller to insert a new employee or associate an existing user as an employee
 const createEmployee = asyncHandler(async (req, res) => {
   // Extract employee details from the request body
-  const {
-    username,
-    position,
-    monthlyPays,
-  } = req.body;
+  const { username, position, monthlyPays } = req.body;
 
   try {
     // Validate that required fields are present in the request body
-    if (!username || !position || !monthlyPays ) {
+    if (!username || !position || !monthlyPays) {
       throw new ApiError(
         400,
         "Missing required fields for creating a new user."
       );
     }
 
-
-
     // Check if there is an existing user with the role 'employee'
-    const user = await User.findOne({username : username});
+    const user = await User.findOne({ username: username });
 
-    if(!user){
+    if (!user) {
       return res
-      .status(404)
-      .json(
-        new ApiError(404, "No user Found , need to register as user first !")
-      );
+        .status(404)
+        .json(
+          new ApiError(404, "No user Found , need to register as user first !")
+        );
     }
 
-    const employeeFound = Employee.findOne({user:user._id})
-    if(employeeFound){
-      throw  new ApiError(403, "Employee Already registered !!")
+    const employeeFound = Employee.findOne({ user: user._id });
+    if (employeeFound) {
+      throw new ApiError(403, "Employee Already registered !!");
     }
 
     // Create a new employee using the found or created user's ObjectId
@@ -68,8 +62,8 @@ const createEmployee = asyncHandler(async (req, res) => {
       monthlyPays,
     });
 
-    const modifiedUser = await User.findById(user?._id)
-    modifiedUser.role = 'employee';
+    const modifiedUser = await User.findById(user?._id);
+    modifiedUser.role = "employee";
     await modifiedUser.save();
 
     return res
@@ -77,8 +71,6 @@ const createEmployee = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(201, employee, "Employee registered successfully!")
       );
-
-      
   } catch (error) {
     console.error("Error registering employee:", error.message);
 
@@ -95,7 +87,6 @@ const getAllEmployees = asyncHandler(async (req, res) => {
         select: "-password -subscriptions -refreshToken",
       })
       .exec();
-
 
     if (!employees || employees.length === 0) {
       throw new ApiError(404, "No employee found!");
@@ -126,9 +117,16 @@ const createService = asyncHandler(async (req, res) => {
   } = req.body;
 
   if (
-    [name,serviceImage ,description, price, duration, isActive, category, vehicleType].some(
-      (field) => field?.trim() === ""
-    )
+    [
+      name,
+      serviceImage,
+      description,
+      price,
+      duration,
+      isActive,
+      category,
+      vehicleType,
+    ].some((field) => field?.trim() === "")
   ) {
     throw new ApiError(400, "All fields are required!!");
   }
@@ -143,7 +141,7 @@ const createService = asyncHandler(async (req, res) => {
   const serviceImageLocalPath = req?.file?.path || ""; // req.file comes from multer
 
   if (!serviceImageLocalPath) {
-    console.log(serviceImage)
+    console.log(serviceImage);
     throw new ApiError(400, "ServiceImage file is required !");
   }
 
@@ -179,7 +177,6 @@ const createService = asyncHandler(async (req, res) => {
     );
 });
 
-
 const getAllService = asyncHandler(async (req, res) => {
   try {
     const allservices = await Service.find({});
@@ -188,7 +185,7 @@ const getAllService = asyncHandler(async (req, res) => {
       throw new ApiError(404, "No employee found!");
     }
     console.log("All Services:", allservices);
-    
+
     return res
       .status(200)
       .json(new ApiResponse(200, allservices, "All services details fetched!"));
@@ -198,44 +195,41 @@ const getAllService = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllAppointment = asyncHandler(async (req, res) => {
+  try {
+    const appontments = await Appointment.find({})
+      .populate("user", "-password -refreshToken")
+      .populate("service")
+      .exec();
 
-const getAllAppointment = asyncHandler(async(req,res)=>{
-    try {
-      const appontments = await Appointment.find({})
-      .populate("user","-password -refreshToken")
-      .populate('service')
-      .exec()
-  
-      if(!appontments || appontments.length === 0){
-        throw new ApiError(404,"No appointment Available")
-      }
-      console.log("All Appointment:", appontments);
-  
-      return res.status(200)
-      .json(
-        new ApiResponse(200,appontments,"All appointment fetched ")
-      )
-  
-    } catch (error) {
-      console.error("Error fetching employees:", error.message);
-      throw new ApiError(404, "No Appointment found!");
+    if (!appontments || appontments.length === 0) {
+      throw new ApiError(404, "No appointment Available");
     }
+    console.log("All Appointment:", appontments);
 
-})
-
+    return res
+      .status(200)
+      .json(new ApiResponse(200, appontments, "All appointment fetched "));
+  } catch (error) {
+    console.error("Error fetching employees:", error.message);
+    throw new ApiError(404, "No Appointment found!");
+  }
+});
 
 const updateAppointment = asyncHandler(async (req, res) => {
   try {
     const { _id, isConfirmed, workProgress, employee } = req.body;
 
-    console.log("req body  --> ",req.body)
+    console.log(employee);
+
+    console.log("req body  --> ", req.body);
     // Find the appointment by ID
     const appointment = await Appointment.findById(_id);
 
     if (!appointment) {
       return res.status(404).json({
         success: false,
-        message: 'Appointment not found!',
+        message: "Appointment not found!",
       });
     }
 
@@ -244,35 +238,44 @@ const updateAppointment = asyncHandler(async (req, res) => {
       // If appointment is confirmed or no employee is assigned, update appointment fields
       appointment.isConfirmed = isConfirmed;
       appointment.workProgress = workProgress;
-      
-      // If employee is provided, assign the appointment to that employee
-      if (employee) {
+
+      // If employee is provided (and not an empty string or null), assign the appointment to that employee
+      if (employee !== null && employee !== "") {
         appointment.employee = employee;
+      } else {
+        // If employee is not provided or is an empty string or null, unassign the appointment from any employee
+        appointment.employee = null;
       }
 
       await appointment.save();
 
       return res.status(200).json({
         success: true,
-        message: 'Appointment updated successfully!',
+        message: "Appointment updated successfully!",
         data: appointment,
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: 'Cannot update workProgress without confirming the appointment first.',
+        message:
+          "Cannot update workProgress without confirming the appointment first.",
       });
     }
   } catch (error) {
-    console.error('Error updating appointment:', error.message);
+    console.error("Error updating appointment:", error.message);
     return res.status(500).json({
       success: false,
-      message: 'Error updating appointment',
+      message: "Error updating appointment",
     });
   }
 });
 
-
-
-
-export { getAllUsersDetails, getAllEmployees, createEmployee, createService , getAllService ,getAllAppointment ,updateAppointment};
+export {
+  getAllUsersDetails,
+  getAllEmployees,
+  createEmployee,
+  createService,
+  getAllService,
+  getAllAppointment,
+  updateAppointment,
+};

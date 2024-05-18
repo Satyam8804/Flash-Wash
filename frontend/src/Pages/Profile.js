@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { IoIosArrowForward } from "react-icons/io";
+// import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { useProfile } from "../utils/useProfile";
-import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { FaPhoneAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 const Profile = () => {
   const [editing, setEditing] = useState(false);
@@ -48,6 +48,8 @@ const Profile = () => {
 
       if (response.ok) {
         const data = await response.json();
+        localStorage.setItem("currentUser", JSON.stringify(data?.data));
+
         setEditing(false);
         console.log(data);
       } else {
@@ -110,8 +112,8 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <div className="flex gap-4 items-center w-full shadow-md p-4 bg-[#1c212a] rounded-lg ">
+    <div className="flex flex-col gap-4 justify-center items-center w-full">
+      {/* <div className="flex gap-4 items-center w-full shadow-md p-4 bg-[#1c212a] rounded-lg ">
         <span className="text-4xl font-bold text-white font-lato">Profile</span>
         <IoIosArrowForward color="white" size={32} />
         <span className="text-4xl font-bold text-white font-lato ">
@@ -120,9 +122,9 @@ const Profile = () => {
               userData.username[0].toUpperCase() + userData.username.slice(1)
             }`}
         </span>
-      </div>
+      </div> */}
       {/* User Details */}
-      <div className="w-full md:w-1/2">
+      <div className="w-full md:w-1/2 bg-[#1c212acd] rounded-lg shadow-lg p-8">
         {userData ? (
           <div className="w-full">
             <div className="w-full flex mb-4">
@@ -174,6 +176,7 @@ const Profile = () => {
                 </form>
               </div>
             </div>
+            <hr />
 
             {editing ? (
               <form>
@@ -285,22 +288,22 @@ const Profile = () => {
                 </button>
               </form>
             ) : (
-              <div className="bg-white rounded-lg shadow p-3 w-full">
+              <div className="rounded-lg shadow p-3 w-full text-white">
                 <h2 className="text-2xl font-semibold mb-4">
                   Contact Information
                 </h2>
                 <div className="flex flex-col w-full justify-start">
-                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3 text-wrap">
-                    <MdEmail color="black" size={24}/>
-                    <span className="font-semibold text-gray-500">{userData.email}</span>
+                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3">
+                    <MdEmail color="white" size={20} />
+                    <span className="font-semibold  text-white">{userData.email}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2  md:w-1/3">
                   <FaPhoneAlt size={20}/>
-                    <span className="font-semibold text-gray-500">{userData.phoneNumber}</span>
+                    <span className="font-semibold text-white ">{userData.phoneNumber}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center gap-2">
                   <FaLocationDot size={24}/>
-                    <address className="font-semibold text-gray-500">
+                    <address className="font-semibold text-white">
                       {userData.address.street}, {userData.address.city},{" "}
                       {userData.address.state}, {userData.address.zipcode},{" "}
                       {userData.address.country}
@@ -309,7 +312,7 @@ const Profile = () => {
                 </div>
                 <button
                   onClick={() => setEditing(true)}
-                  className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-md hover:bg-blue-600 transition duration-300"
+                  className="bg-[#171e1fb4] text-white py-2 px-4 mt-4 hover:bg-[#0f1715] transition duration-300"
                 >
                   Edit Profile
                 </button>
@@ -320,7 +323,7 @@ const Profile = () => {
           <p>Loading...</p>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

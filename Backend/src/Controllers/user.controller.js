@@ -216,11 +216,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
+  
   const user = await User.findById(req.user?._id);
   const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
 
   if (!isPasswordCorrect) {
-    throw new ApiError(400, "Invalid old Password");
+    throw new ApiError(406, "Invalid old Password !");
   }
   user.password = newPassword;
   await user.save({ validateBeforeSave: false });
@@ -382,13 +383,12 @@ const getAppointments = asyncHandler(async (req, res) => {
 });
 
 const getFeedback = asyncHandler(async (req, res) => {
-  const { ratings, comment, appointmentId } = req.body;
+  const { ratings, comment } = req.body;
 
-  console.log(ratings , comment , appointmentId)
 
   const currentUser = req.user;
   try {
-    const feedback = await Feedback.findById(appointmentId);
+    const feedback = await Feedback.findOne({user:currentUser?._id});
 
     if (feedback) {
       return res.status(409).json({
@@ -398,7 +398,6 @@ const getFeedback = asyncHandler(async (req, res) => {
     }
 
     const newFeedback = await Feedback.create({
-      appointment:appointmentId,
       user: currentUser?._id,
       ratings,
       comment,
@@ -426,6 +425,26 @@ const getFeedback = asyncHandler(async (req, res) => {
     });
   }
 });
+
+const getAllFeedbacks = asyncHandler(async(req,res)=>{
+  try {
+    const feedbacks = await Feedback.find().populate('user', '-password -subscriptions -refreshToken');
+    
+    return res.status(200).json({
+      success: true,
+      data: feedbacks
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching feedbacks",
+      error: error.message
+    });
+  }
+});
+
+
+
 
 const sendMail = asyncHandler(async(req, res)=>{
   
@@ -468,8 +487,10 @@ contactEmail.verify((error) => {
       if (error) {
         res.json(error);
       } else {
-        res.json({ code: 200, status: "Message Sent" });
-      }
+        res.status(201).json({
+          success: true,
+          message: "Email Sent Successfully",
+        });      }
     });
   });
 
@@ -486,7 +507,8 @@ export {
   bookAppointment,
   getAppointments,
   getFeedback,
-  sendMail
+  sendMail,
+  getAllFeedbacks
 };
 
 //signUp

@@ -1,3 +1,10 @@
+.modal::-webkit-scrollbar {
+    display: none;
+  }
+  .modal {
+    scrollbar-width: none;
+    overflow-y: auto; 
+    }
 
 .main-container {
   background-color: #423d55; 

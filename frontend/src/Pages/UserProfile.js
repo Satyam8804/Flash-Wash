@@ -5,11 +5,11 @@ import { Link, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 const UserProfile = () => {
   return (
-    <div className="bg-black signinDiv">
+    <div className="signinDiv min-h-[100vh]">
       <Navbar />
-      <div className="flex w-full h-full">
+      <div className="flex w-full h-full ">
         {/* Sidebar */}
-        <div className="w-[350px] bg-[#1c212a] p-4 m-4 rounded-lg ">
+        <div className="w-[350px] bg-[#1c212acd] p-4 m-4 rounded-lg shadow-lg h-min">
           <ul className="flex flex-col gap-6 font-bold text-white ">
             <Link to={""}>
               <li
@@ -33,6 +33,14 @@ const UserProfile = () => {
                 className="cursor-pointer hover:bg-gray-500 hover:text-white p-2 rounded-md"
               >
                 Change Password
+              </li>
+            </Link>
+            <Link to={'feedback'}>
+              <li   
+              name="feedback"
+                className="cursor-pointer hover:bg-gray-500 hover:text-white p-2 rounded-md"
+              >
+                feedback
               </li>
             </Link>
           </ul>
