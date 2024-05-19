@@ -1,5 +1,9 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import MainCarImg from '../images/maincarimg.jpg'
+import carImg from '../images/imgcar.jpg'
+import carimg2 from '../images/carimg2.jpg'
+import carimg3 from '../images/carimg3.jpg'
 
 const AboutUs = () => {
   return (
@@ -28,7 +32,7 @@ const AboutUs = () => {
           {/* Image */}
           <div className="text-center border-4">
             <img
-              src="https://wallpapercave.com/wp/wp7395312.jpg"
+              src={MainCarImg}
               alt="Flash Wash"
               className="rounded-lg shadow-md mx-auto h-100 w-100 object-cover"
             />
@@ -41,9 +45,10 @@ const AboutUs = () => {
           {/* Mission Card */}
           <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white p-6">
             <img
-              src="https://picsum.photos/id/237/300/200"
+              src={carImg}
               alt="Flash Wash Mission"
               className="mx-auto mb-4 object-cover"
+              style={{ height: "250px", width: "300px" }}
             />
             <h2 className="text-xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-200 ">
               Our Mission
@@ -58,9 +63,10 @@ const AboutUs = () => {
           {/* Vision Card */}
           <div className="rounded-lg shadow-md bg-white p-6">
             <img
-              src="https://picsum.photos/id/1036/300/200"
+              src={carimg2}
               alt="Flash Wash Vision"
               className="mx-auto mb-4 object-cover"
+              style={{ height: "250px", width: "300px" }}
             />
             <h2 className="text-xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-200">
               Our Vision
@@ -75,9 +81,10 @@ const AboutUs = () => {
           {/* Values Card */}
           <div className="rounded-lg shadow-md bg-white p-6">
             <img
-              src="https://picsum.photos/id/248/300/200"
+              src={carimg3}
               alt="Flash Wash Values"
               className="mx-auto mb-4 object-cover"
+              style={{ height: "250px", width: "300px" }}
             />
             <h2 className="text-xl font-semibold text-center mb-2 text-gray-800 dark:text-gray-200">
               Our Values

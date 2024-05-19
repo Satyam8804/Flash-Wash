@@ -84,7 +84,7 @@ const recruitmentPrompts = [
       {
         value: "other",
         label: "Free rec question",
-        trigger: "enter-your-question", // this prompt is located in "REC-userinputs-steps.js"
+        trigger: "enter-your-query", // this prompt is located in "REC-userinputs-steps.js"
       },
       {
         value: "back to main menu from rec-options",

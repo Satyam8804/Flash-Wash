@@ -36,5 +36,4 @@ const progPrompts = [
     trigger: "give-contact-details", // this prompt is in pingPrompts
   },
 ];
-
 export default progPrompts;
