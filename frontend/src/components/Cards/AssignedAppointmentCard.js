@@ -10,7 +10,7 @@ const AssignedAppointmentCard = ({ accessToken }) => {
     const fetchAssignedAppointment = async () => {
       try {
         // Make a GET request to fetch assigned appointments
-        const response = await axios.get("http://localhost:8000/api/v1/employee/get-assigned-work", {
+        const response = await axios.get("https://flash-wash-l6v3.onrender.com/api/v1/employee/get-assigned-work", {
           headers: {
             Authorization: `Bearer ${JSON.parse(accessToken)}`,
           },

@@ -19,7 +19,7 @@ const Checkout = (props) => {
   
   const openRazorpayModal = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/razorpay/order', paymentDetails);
+      const response = await axios.post('https://flash-wash-l6v3.onrender.com/api/razorpay/order', paymentDetails);
       const { data } = response;
       const options = {
         key: data.key,

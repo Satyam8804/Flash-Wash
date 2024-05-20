@@ -9,7 +9,7 @@ import { FaLocationDot } from "react-icons/fa6";
 const Profile = () => {
   const [editing, setEditing] = useState(false);
   const { userData, updatedUserData, setUpdatedUserData } = useProfile(
-    "http://localhost:8000/api/v1/users/profile"
+    "https://flash-wash-l6v3.onrender.com/api/v1/users/profile"
   );
 
   const accessToken = localStorage.getItem("accessToken");
@@ -35,7 +35,7 @@ const Profile = () => {
     event.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/update-account",
+        "https://flash-wash-l6v3.onrender.com/api/v1/users/update-account",
         {
           method: "PATCH",
           headers: {
@@ -89,7 +89,7 @@ const Profile = () => {
       formData.append("avatar", fileInfo);
 
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/updateAvatar",
+        "https://flash-wash-l6v3.onrender.com/api/v1/users/updateAvatar",
         {
           method: "PATCH",
           headers: {

@@ -54,7 +54,7 @@ const SignUpForm = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/register",
+        "https://flash-wash-l6v3.onrender.com/api/v1/users/register",
         {
           method: "POST",
           headers: {

@@ -14,7 +14,7 @@ const Employee = () => {
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const { userData} = useProfile(
-    "http://localhost:8000/api/v1/employee/info"
+    "https://flash-wash-l6v3.onrender.com/api/v1/employee/info"
   );
 
   console.log(userData)

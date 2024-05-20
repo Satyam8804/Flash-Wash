@@ -29,7 +29,7 @@ const Appointment = () => {
     const accessToken = localStorage.getItem("accessToken");
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/get-appointment`,
+        `https://flash-wash-l6v3.onrender.com/api/v1/users/get-appointment`,
         {
           method: "GET",
           headers: {
@@ -66,7 +66,7 @@ const Appointment = () => {
     const appointmentId = appointment?._id;
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/feedback",
+        "https://flash-wash-l6v3.onrender.com/api/v1/users/feedback",
         {
           method: "POST",
           headers: {

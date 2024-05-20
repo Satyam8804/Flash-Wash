@@ -17,7 +17,7 @@ const Body = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/v1/users/getAllFeedbacks");
+        const response = await fetch("https://flash-wash-l6v3.onrender.com/api/v1/users/getAllFeedbacks");
         if (!response.ok) {
           throw new Error("Failed to fetch feedbacks");
         }

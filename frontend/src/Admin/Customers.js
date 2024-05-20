@@ -13,7 +13,7 @@ const Customers = () => {
   const accessToken = localStorage.getItem('accessToken')
   const fetchUsers = async()=>{
     try {
-      const response = await fetch('http://localhost:8000/api/v1/admin/get-all-users',{
+      const response = await fetch('https://flash-wash-l6v3.onrender.com/api/v1/admin/get-all-users',{
         method:'GET',
         headers:{
           Authorization: `Bearer ${JSON.parse(accessToken)}`,

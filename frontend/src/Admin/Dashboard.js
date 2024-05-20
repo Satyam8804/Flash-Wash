@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const { userData} = useProfile(
-    "http://localhost:8000/api/v1/users/profile"
+    "https://flash-wash-l6v3.onrender.com/api/v1/users/profile"
   );
 
   const handleMenuIconClick = () => {
