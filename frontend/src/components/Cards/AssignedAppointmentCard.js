@@ -86,6 +86,14 @@ const AssignedAppointmentCard = ({ accessToken }) => {
           >
             <b>Scheduled Date:</b> {new Date(assignedAppointment?.scheduledDate).toLocaleDateString()}
           </p>
+          <p
+            style={{
+              color: "#555", // Slightly lighter text color for paragraph
+              marginBottom: "10px", // Space below paragraphs
+            }}
+          >
+            <b>Address:</b> {assignedAppointment?.location}
+          </p>
           {/* Add more details as needed */}
         </div>
       ) : (
