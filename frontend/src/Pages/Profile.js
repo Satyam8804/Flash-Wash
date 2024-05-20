@@ -176,11 +176,12 @@ const Profile = () => {
                 </form>
               </div>
             </div>
+          
             <hr />
-
+            <br/>
             {editing ? (
               <form>
-                <div className="grid grid-cols-2 gap-4 text-left">
+                <div className="grid grid-cols-2 gap-4 text-left text-white">
                   <div>
                     <label htmlFor="fullName">Full Name:</label>
                     <input
@@ -293,16 +294,18 @@ const Profile = () => {
                   Contact Information
                 </h2>
                 <div className="flex flex-col w-full justify-start">
-                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3">
+                  <div className="mb-4 px-2 w-full flex items-center gap-2">
                     <MdEmail color="white" size={20} />
+                   
                     <span className="font-semibold  text-white">{userData.email}</span>
                   </div>
-                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2  md:w-1/3">
+                  <div className="mb-4 px-2 w-full flex items-center gap-2">
+                    
                   <FaPhoneAlt size={20}/>
                     <span className="font-semibold text-white ">{userData.phoneNumber}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center gap-2">
-                  <FaLocationDot size={24}/>
+                  <FaLocationDot size={20}/>
                     <address className="font-semibold text-white">
                       {userData.address.street}, {userData.address.city},{" "}
                       {userData.address.state}, {userData.address.zipcode},{" "}

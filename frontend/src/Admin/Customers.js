@@ -4,7 +4,7 @@ import CustomerCard from '../components/Cards/CustomerCard';
 const Customers = () => {
   const [users,setUsers] = useState([]);
 
-  console.log(users)
+
 
   useEffect(()=>{
     fetchUsers()

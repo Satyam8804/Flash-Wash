@@ -49,7 +49,7 @@ const Body = () => {
             to="/service"
             onClick={() => {
               navigate("/service");
-              window.location.reload();
+           
             }}
           >
             Book Now

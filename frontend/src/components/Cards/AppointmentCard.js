@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaBusinessTime } from "react-icons/fa";
+import { FaPhoneAlt, FaBusinessTime } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 const AppointmentCard = ({ appointment, accessToken }) => {
-  const [updatedAppointment, setUpdatedAppointment] = useState(appointment);
+  const [updatedAppointment, setUpdatedAppointment] = useState({
+    ...appointment,
+    employee: appointment.employee || '',
+  });
   const [isSaving, setIsSaving] = useState(false);
   const [employees, setEmployees] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Fetch all employees from the backend
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -17,7 +18,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
           method: "GET",
           headers: {
             Authorization: `Bearer ${JSON.parse(accessToken)}`,
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
         });
         if (response.ok) {
@@ -32,7 +33,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
     };
 
     fetchEmployees();
-  }, [accessToken,selectedEmployee]);
+  }, [accessToken]);
 
   const handleUpdate = async (appointmentId, updatedFields) => {
     try {
@@ -54,12 +55,20 @@ const AppointmentCard = ({ appointment, accessToken }) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
+        setUpdatedAppointment(prev => ({
+          ...prev,
+          ...updatedFields,
+          employee: employees.find(emp => emp._id === updatedFields.employee) || prev.employee
+        }));
+        setErrorMessage("");  // Clear any previous error messages
       } else {
         const errorData = await response.json();
         console.error("Error updating appointment:", errorData);
+        setErrorMessage(errorData.message);  // Set the error message from the response
       }
     } catch (error) {
       console.error("Error:", error.message);
+      setErrorMessage("An error occurred while updating the appointment.");  // Set a generic error message
     }
   };
 
@@ -67,21 +76,25 @@ const AppointmentCard = ({ appointment, accessToken }) => {
     try {
       setIsSaving(true);
       const updatedFields = {};
-      if (updatedAppointment.isConfirmed !== appointment.isConfirmed) {
+
+      if (updatedAppointment.isConfirmed ) {
         updatedFields.isConfirmed = updatedAppointment.isConfirmed;
       }
-      if (updatedAppointment.workProgress !== appointment.workProgress) {
+      if (updatedAppointment.workProgress) {
         updatedFields.workProgress = updatedAppointment.workProgress;
       }
-
-      if (selectedEmployee !== appointment.employee?._id) {
-        updatedFields.employee = selectedEmployee;
+      if (updatedAppointment.employee && updatedAppointment.employee !== appointment.employee?._id) {
+        updatedFields.employee = updatedAppointment.employee;
       }
 
       // Send the update if there are changes
       if (Object.keys(updatedFields).length > 0) {
         await handleUpdate(appointment._id, updatedFields);
+        
       }
+      window.location.reload()
+        
+      
     } catch (error) {
       console.error("Error saving changes:", error.message);
     } finally {
@@ -95,10 +108,10 @@ const AppointmentCard = ({ appointment, accessToken }) => {
         <img
           src={appointment?.user?.avatar || "https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg"}
           alt="profile"
-          className="w-16 h-16 rounded-[50%] border-2 transfrom brightness-125 object-fill"
+          className="w-16 h-16 rounded-[50%] border-2 transform brightness-125 object-fill"
         />
         <span className="text-lg font-bold">{appointment?.user?.fullName}</span>
-        <div className="flex gap-2 items-center text-w">
+        <div className="flex gap-2 items-center">
           <FaPhoneAlt />
           <span className="text-md">{appointment?.user?.phoneNumber}</span>
         </div>
@@ -114,7 +127,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
       </div>
       {/* Editable Fields */}
       <div className="flex items-center gap-2">
-        <label className="">Confirmed:</label>
+        <label>Confirmed:</label>
         <input
           type="checkbox"
           checked={updatedAppointment.isConfirmed}
@@ -138,6 +151,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
             })
           }
           className="px-2 py-1 rounded cursor-pointer text-gray-500"
+          disabled={!updatedAppointment.isConfirmed}
         >
           <option value="Not Started">Not Started</option>
           <option value="In Progress">In Progress</option>
@@ -147,10 +161,16 @@ const AppointmentCard = ({ appointment, accessToken }) => {
       <div className="flex items-center gap-2 mb-2">
         <label className="mr-2">Assign Employee:</label>
         <select
-          value={selectedEmployee}
-          onChange={(e) => setSelectedEmployee(e.target.value)}
+          value={updatedAppointment.employee}
+          onChange={(e) =>
+            setUpdatedAppointment({
+              ...updatedAppointment,
+              employee: e.target.value,
+            })
+          }
           className="px-2 py-1 rounded cursor-pointer text-gray-500"
         >
+          <option value="">Select Employee</option>
           {employees.map((employee) => (
             <option key={employee?._id} value={employee?._id}>
               {employee?.user?.fullName}
@@ -158,6 +178,8 @@ const AppointmentCard = ({ appointment, accessToken }) => {
           ))}
         </select>
       </div>
+      {/* Display Error Message */}
+      {errorMessage && <div className="text-red-500 mb-2">{errorMessage}</div>}
       {/* Save Changes Button */}
       <button
         className={`bg-[#0f1715] text-white py-2 px-4 mt-2 rounded-md hover:bg-gray-600 transition duration-300 ${

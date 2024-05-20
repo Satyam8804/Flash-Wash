@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 
 const accessToken=localStorage.getItem('accessToken');
 const url = 'http://localhost:8000/api/v1/users/get-all-services'
@@ -46,14 +47,18 @@ export const fetchAllService = async () => {
         })
     })
 
-    if (response.ok) {
-      const data = await response.json();
-      return data
-    } else {
-      console.error("Error updating user profile:", response);
+    // if (response.ok) {
+    //   const data = await response.json();
+     
+    //   toast.success(response?.message)
+    //   return data
+    // } else {
+    //   console.error("Error updating user profile:", response);
       
-      return response
-    }
+    //   toast.error(response?.message)
+    //   return response
+    // }
+    return response
     } catch (error) {
       console.log(error)
       return error

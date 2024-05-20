@@ -114,13 +114,7 @@ const LoginInForm = () => {
             {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
           </span>
         </div>
-        <div className="display-flex w-full items-center">
-          <Link to="#" className="block mt-2">
-            <span className="text-sm text-blue-800 font-bold">
-              Forgot Password ?
-            </span>
-          </Link>
-        </div>
+        
       </label>
 
       <button className="h-8 px-4 text-white border-none bg-[#373737] hover:bg-black mt-4 relative">

@@ -43,6 +43,7 @@ const Appointment = () => {
         const data = await response.json();
         setAppointment(data?.data);
         setCurAppointment(data?.data)
+        console.log("dem",data?.data)
       } else {
         console.log("Error fetching Appointment!");
       }

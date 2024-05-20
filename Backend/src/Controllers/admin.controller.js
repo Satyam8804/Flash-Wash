@@ -220,8 +220,6 @@ const updateAppointment = asyncHandler(async (req, res) => {
   try {
     const { _id, isConfirmed, workProgress, employee } = req.body;
 
-    console.log(employee);
-
     console.log("req body  --> ", req.body);
     // Find the appointment by ID
     const appointment = await Appointment.findById(_id);
@@ -257,8 +255,7 @@ const updateAppointment = asyncHandler(async (req, res) => {
     } else {
       return res.status(400).json({
         success: false,
-        message:
-          "Cannot update workProgress without confirming the appointment first.",
+        message: "Cannot update workProgress without confirming the appointment first.",
       });
     }
   } catch (error) {
@@ -269,6 +266,7 @@ const updateAppointment = asyncHandler(async (req, res) => {
     });
   }
 });
+
 
 export {
   getAllUsersDetails,
