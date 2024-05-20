@@ -31,12 +31,12 @@ const steps = [
       { value: "recruitment", label: "Services", trigger: "recruitment" },
       {
         value: "programming buddy",
-        label: "Looking for different details",
+        label: "Is there a penalty for canceling or rescheduling appointments",
         trigger: "programmingQ1",
       },
       {
         value: "ping pong",
-        label: "Want to play ping pong",
+        label: "What types of car wash services does Flash Wash offer",
         trigger: "PPQ1",
       },
     ],

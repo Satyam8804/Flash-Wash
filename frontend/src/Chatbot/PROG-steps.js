@@ -2,7 +2,7 @@
 const progPrompts = [
   {
     id: "programmingQ1",
-    message: "nice, what type of project do you want to program?",
+    message: "No there is no cancellation charge on first three Cancellation and reschudling?",
     trigger: "programmingQ2",
   },
 

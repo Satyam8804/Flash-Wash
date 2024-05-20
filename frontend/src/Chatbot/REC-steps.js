@@ -2,7 +2,7 @@
 const recruitmentPrompts = [
   {
     id: "recruitment",
-    message: `I can't wait to hear what you have to offer! Please select any topic and I will answer on behalf of Caroline`,
+    message: `I can't wait to  offer you all our services! Please select any service and I will provide you complete detail`,
     trigger: "rec-options",
   },
   {
@@ -13,14 +13,14 @@ const recruitmentPrompts = [
   {
     id: "any-questions-yesno-answer",
     options: [
-      {
-        value: "yes",
-        label: "yes, type my question",
-        trigger: "wait-for-rec-question",
-      },
+      // {
+      //   value: "yes",
+      //   label: "yes, type my question",
+      //   trigger: "wait-for-rec-question",
+      // },
       {
         value: "Back to rec menu",
-        label: "Yes, send me back to rec menu",
+        label: "Yes, send me back to service menu",
         trigger: "rec-options",
       },
       {
@@ -43,49 +43,49 @@ const recruitmentPrompts = [
     options: [
       {
         value: "salary expectation",
-        label: "Salary expectation",
+        label: "Basic Service",
         trigger: "salary-expectation",
       },
       {
         value: "notice period",
-        label: "Notice period",
+        label: "Premium Service",
         trigger: "notice-period",
       },
       {
         value: "work style",
-        label: "Work style",
+        label: "Delux",
         trigger: "work-style",
       },
-      {
-        value: "right to work in UK",
-        label: "Right to work in UK",
-        trigger: "rights-work",
-      },
+      // {
+      //   value: "right to work in UK",
+      //   label: "Right to work in UK",
+      //   trigger: "rights-work",
+      // },
       {
         value: "current location",
-        label: "Current location",
+        label: "Dulex Premium",
         trigger: "curr-location",
       },
-      {
-        value: "preferred work style",
-        label: "Preferred work style",
-        trigger: "preferred-workstyle",
-      },
-      {
-        value: "contact",
-        label: "Contact details",
-        trigger: "contact-details",
-      },
-      {
-        value: "Show other topics",
-        label: "Show me other topics",
-        trigger: "rec-options2",
-      },
-      {
-        value: "other",
-        label: "Free rec question",
-        trigger: "enter-your-query", // this prompt is located in "REC-userinputs-steps.js"
-      },
+      // {
+      //   value: "preferred work style",
+      //   label: "Preferred work style",
+      //   trigger: "preferred-workstyle",
+      // },
+      // {
+      //   value: "contact",
+      //   label: "Contact details",
+      //   trigger: "contact-details",
+      // },
+      // {
+      //   value: "Show other topics",
+      //   label: "Show me other topics",
+      //   trigger: "rec-options2",
+      // },
+      // {
+      //   value: "other",
+      //   label: "Free rec question",
+      //   trigger: "enter-your-query", // this prompt is located in "REC-userinputs-steps.js"
+      // },
       {
         value: "back to main menu from rec-options",
         label: "Back to main menu",
@@ -129,7 +129,7 @@ const recruitmentPrompts = [
       },
       {
         value: "Back to rec menu",
-        label: "Back to Rec menu",
+        label: "Back to Service menu",
         trigger: "rec-options",
       },
     ],
@@ -137,7 +137,7 @@ const recruitmentPrompts = [
   // chatbot asks if you have any other question
   {
     id: "any-rec-question-prompt",
-    message: "Any other rec question?",
+    message: "Any other  question?",
     trigger: "any-questions-yesno-answer",
   },
   {
@@ -150,7 +150,7 @@ const recruitmentPrompts = [
       },
       {
         value: "back to rec menu from topics 2",
-        label: "Back to Rec menu",
+        label: "Back to Service menu",
         trigger: "rec-options",
       },
     ],
@@ -158,18 +158,18 @@ const recruitmentPrompts = [
   // Answers to tag topics
   {
     id: "salary-expectation",
-    message: `${process.env.REACT_APP_SALARY}.`,
+    message: `Every 15000 Kms takes 3 Months Takes 24 Hours 1 Month Warranty Includes 3 Services Price: ₹1500 Hours: 3 Category: Exterior Wash Vehicle Type: Four-wheeler`,
     trigger: "any-rec-question-prompt",
   },
   {
     id: "notice-period",
-    message: `notice period : ${process.env.REACT_APP_NOTICEPERIOD}.`,
+    message: `Every 7500 Kms takes 6 Months Takes 18 Hours 6 Month Warranty Includes 6 Services Price: ₹3500 Hours: 6 Category: Exterior Wash Vehicle Type: Two-wheeler`,
     trigger: "any-rec-question-prompt",
   },
   {
     id: "work-style",
     message:
-      "I am open to Hybrid up to 2 days at the office / week maximum, or fully remote.",
+      "Every 5000 Kms takes 9 Months Takes 12 Hours 9 Month Warranty Includes 9 Services Price: ₹6000 Hours: 9 Category: Exterior Wash Vehicle Type: Two-wheeler.",
     trigger: "any-rec-question-prompt",
   },
 
@@ -180,7 +180,7 @@ const recruitmentPrompts = [
   },
   {
     id: "curr-location",
-    message: `I am currently living in ${process.env.REACT_APP_LOCATION}`,
+    message: `Every 5000 Kms takes 3 Months Takes 4 Hours 1 Month Warranty Includes 9 Services Price: ₹8000 Hours: 3 Category: Interior Wash Vehicle Type: Four-wheeler`,
     trigger: "any-rec-question-prompt",
   },
   {

@@ -18,6 +18,7 @@ const AssignedAppointmentCard = ({ accessToken }) => {
 
         if (response.data.success) {
           setAssignedAppointment(response.data.data);
+          console.log(response.data.data)
         } else {
           setError(response.data.message || "Failed to fetch assigned appointments");
         }
@@ -40,17 +41,62 @@ const AssignedAppointmentCard = ({ accessToken }) => {
   }
 
   return (
-    <div className="card">
-      <h2>Assigned Appointment</h2>
+    <div
+      style={{
+        backgroundColor: "#f8f9fa", // Light grey background color
+        borderRadius: "10px", // Rounded corners
+        padding: "20px", // Padding inside the card
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for a lifted effect
+        margin: "20px", // Margin around the card
+        maxWidth: "400px", // Maximum width of the card
+      }}
+    >
+      <h2
+        style={{
+          color: "#333", // Darker text color for the heading
+          fontSize: "1.5em", // Larger font size for the heading
+          marginBottom: "15px", // Space below the heading
+        }}
+      >
+        <b>Assigned Appointment</b>
+      </h2>
       {assignedAppointment ? (
         <div>
-          <p>User: {assignedAppointment.user.fullName}</p>
-          <p>Service: {assignedAppointment.service.name}</p>
-          <p>Scheduled Date: {new Date(assignedAppointment.scheduledDate).toLocaleDateString()}</p>
+          <p
+            style={{
+              color: "#555", // Slightly lighter text color for paragraph
+              marginBottom: "10px", // Space below paragraphs
+            }}
+          >
+            <b>User:</b> {assignedAppointment?.user?.fullName}
+          </p>
+          <p
+            style={{
+              color: "#555", // Slightly lighter text color for paragraph
+              marginBottom: "10px", // Space below paragraphs
+            }}
+          >
+           <b>Phone Number:</b>{assignedAppointment?.user?.phoneNumber}
+          </p>
+          <p
+            style={{
+              color: "#555", // Slightly lighter text color for paragraph
+              marginBottom: "10px", // Space below paragraphs
+            }}
+          >
+            <b>Scheduled Date:</b> {new Date(assignedAppointment?.scheduledDate).toLocaleDateString()}
+          </p>
           {/* Add more details as needed */}
         </div>
       ) : (
-        <p>No assigned appointment found.</p>
+        <p
+          style={{
+            color: "#555", // Slightly lighter text color for paragraph
+            marginBottom: "10px", // Space below paragraphs
+          }}
+        >
+          No assigned appointment found.
+        </p>
       )}
     </div>
   );
