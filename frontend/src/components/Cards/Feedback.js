@@ -32,7 +32,7 @@ const Feedback = ({ feedback }) => {
         <div className="p-4 flex flex-col justify-between gap-4">
           <span className="text-gray-600 text-left">
             <FaQuoteLeft size={10} color="#a9f5e2" />
-            {feedback?.comment} 
+            {feedback?.comment?.length > 110 ?feedback?.comment?.substring(0,110) + "..." : feedback?.comment} 
             <FaQuoteRight size={10} color="#a9f5e2" className="float-right" />
           </span>
          

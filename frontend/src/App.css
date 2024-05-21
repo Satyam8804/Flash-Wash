@@ -135,29 +135,12 @@ h3 {
 }
 
 
-.animateBorder ul li {
-  text-transform: capitalize;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px 15px;
-  margin: 0 10px;
-  position: relative;
-  display: block;
-  overflow: hidden;
+/* Custom CSS for the border animation */
+.group:hover .group-hover\\:scale-x-100 {
+  transform: scaleX(1);
+
 }
-.animateBorder ul li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  transform: translatex(-100%);
-  border-bottom: 4px solid white;
-  transition: 0.3s;
-  z-index: -1;
-  transform-origin: bottom left;
-}
-.animateBorder ul li:hover ,.animateBorder ul li::after {
-  transform: translatex(0);
+
+.group-hover\\:scale-x-100 {
+  transform: scaleX(0);
 }
