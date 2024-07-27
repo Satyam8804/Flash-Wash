@@ -7,20 +7,20 @@ const pingPrompts = [
   {
     id: "level-options",
     options: [
-      { value: "beginner", label: "beginner", trigger: "beginner-lev" },
+      { value: "beginner", label: "Basic  Service", trigger: "beginner-lev" },
       {
         value: "garden player",
-        label: "garden player",
+        label: "Premium",
         trigger: "garden-lev",
       },
       {
         value: "intermediate",
-        label: "intermediate",
+        label: "Dulex",
         trigger: "inter-lev",
       },
       {
         value: "advanced",
-        label: "advanced",
+        label: "",
         trigger: "advanced-lev",
       },
     ],
@@ -55,7 +55,7 @@ const pingPrompts = [
   //  Intermediate
   {
     id: "inter-lev",
-    message: "Sounds good! How many years did you train?",
+    message: "Return to main menu",
     trigger: "inter-wait-user",
   },
   {

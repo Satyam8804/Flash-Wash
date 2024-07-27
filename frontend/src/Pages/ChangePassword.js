@@ -19,7 +19,7 @@ const ChangePassword = () => {
     e.preventDefault();
     const accessToken = localStorage.getItem('accessToken');
     try {
-      const response = await fetch('http://localhost:8000/api/v1/users/change-password', {
+      const response = await fetch('https://flash-wash-l6v3.onrender.com/api/v1/users/change-password', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -21,10 +21,10 @@ const Template = ({ title, subTitle, formtype }) => {
         <div className=" w-full">
           {formtype === "signup" ? <SignUpForm /> : <LoginInForm />}
         </div>
-        <span className="font-bold font-lato  text-sm text-white">OR</span>
+      
       </div>
-      <div className="flex gap-4">
-        <Link to="#" className="span">
+      <div className="flex gap-4 invisible">
+        <Link to="#" className="span ">
           <div className="flex items-center gap-2 bg-white px-2 py-1 rounded-md shadow-md">
             <img src={google} className="h-[20px]" alt="logo" />
             <span className="text-[12px] font-lato text-gray-500">

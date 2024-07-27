@@ -27,56 +27,41 @@ const getAllUsersDetails = asyncHandler(async (req, res) => {
 
 // Controller to insert a new employee or associate an existing user as an employee
 const createEmployee = asyncHandler(async (req, res) => {
-  // Extract employee details from the request body
   const { username, position, monthlyPays } = req.body;
 
   try {
-    // Validate that required fields are present in the request body
     if (!username || !position || !monthlyPays) {
-      throw new ApiError(
-        400,
-        "Missing required fields for creating a new user."
-      );
+      throw new ApiError(400, "Missing required fields for creating a new user.");
     }
 
-    // Check if there is an existing user with the role 'employee'
     const user = await User.findOne({ username: username });
 
     if (!user) {
-      return res
-        .status(404)
-        .json(
-          new ApiError(404, "No user Found , need to register as user first !")
-        );
+      return res.status(404).json(new ApiError(404, "No user Found, need to register as user first!"));
     }
 
-    const employeeFound = Employee.findOne({ user: user._id });
+    const employeeFound = await Employee.findOne({ user: user._id });
     if (employeeFound) {
-      throw new ApiError(403, "Employee Already registered !!");
+      throw new ApiError(403, "Employee Already registered!!");
     }
 
-    // Create a new employee using the found or created user's ObjectId
     const employee = await Employee.create({
       user: user._id,
       position,
-      monthlyPays,
+      monthlyPays: parseInt(monthlyPays),
     });
 
-    const modifiedUser = await User.findById(user?._id);
+    const modifiedUser = await User.findById(user._id);
     modifiedUser.role = "employee";
     await modifiedUser.save();
 
-    return res
-      .status(201)
-      .json(
-        new ApiResponse(201, employee, "Employee registered successfully!")
-      );
+    return res.status(201).json(new ApiResponse(201, employee, "Employee registered successfully!"));
   } catch (error) {
-    console.error("Error registering employee:", error.message);
-
-    throw new ApiError(500, "Internal Server Error");
+    console.error("Error registering employee:", error);
+    res.status(500).json(new ApiError(500, "Internal Server Error"));
   }
 });
+
 
 const getAllEmployees = asyncHandler(async (req, res) => {
   try {

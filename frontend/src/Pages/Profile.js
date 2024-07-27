@@ -9,7 +9,7 @@ import { FaLocationDot } from "react-icons/fa6";
 const Profile = () => {
   const [editing, setEditing] = useState(false);
   const { userData, updatedUserData, setUpdatedUserData } = useProfile(
-    "http://localhost:8000/api/v1/users/profile"
+    "https://flash-wash-l6v3.onrender.com/api/v1/users/profile"
   );
 
   const accessToken = localStorage.getItem("accessToken");
@@ -35,7 +35,7 @@ const Profile = () => {
     event.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/update-account",
+        "https://flash-wash-l6v3.onrender.com/api/v1/users/update-account",
         {
           method: "PATCH",
           headers: {
@@ -89,7 +89,7 @@ const Profile = () => {
       formData.append("avatar", fileInfo);
 
       const response = await fetch(
-        "http://localhost:8000/api/v1/users/updateAvatar",
+        "https://flash-wash-l6v3.onrender.com/api/v1/users/updateAvatar",
         {
           method: "PATCH",
           headers: {
@@ -176,11 +176,12 @@ const Profile = () => {
                 </form>
               </div>
             </div>
+          
             <hr />
-
+            <br/>
             {editing ? (
               <form>
-                <div className="grid grid-cols-2 gap-4 text-left">
+                <div className="grid grid-cols-2 gap-4 text-left text-white">
                   <div>
                     <label htmlFor="fullName">Full Name:</label>
                     <input
@@ -293,16 +294,18 @@ const Profile = () => {
                   Contact Information
                 </h2>
                 <div className="flex flex-col w-full justify-start">
-                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2 md:w-1/3">
+                  <div className="mb-4 px-2 w-full flex items-center gap-2">
                     <MdEmail color="white" size={20} />
+                   
                     <span className="font-semibold  text-white">{userData.email}</span>
                   </div>
-                  <div className="mb-4 px-2 w-full flex items-center sm:w-1/2 gap-2  md:w-1/3">
+                  <div className="mb-4 px-2 w-full flex items-center gap-2">
+                    
                   <FaPhoneAlt size={20}/>
                     <span className="font-semibold text-white ">{userData.phoneNumber}</span>
                   </div>
                   <div className="mb-4 px-2 w-full flex items-center gap-2">
-                  <FaLocationDot size={24}/>
+                  <FaLocationDot size={20}/>
                     <address className="font-semibold text-white">
                       {userData.address.street}, {userData.address.city},{" "}
                       {userData.address.state}, {userData.address.zipcode},{" "}

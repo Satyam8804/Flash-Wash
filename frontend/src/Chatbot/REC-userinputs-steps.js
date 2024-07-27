@@ -1,8 +1,7 @@
 const rec_UserInputPrompts = [
   {
-    id: "enter-your-question",
-    message:
-      "Please type your recruitment related question. Please note that I am not chatGPT. I can reply to few recruitment related questions as this feature is just a POC.",
+    id: "enter-your-query",
+    message:"Please type your query. Please note that I am not chatGPT. I can reply to few recruitment related questions as this feature is just a POC.",
     trigger: "wait-for-rec-question",
   },
   {

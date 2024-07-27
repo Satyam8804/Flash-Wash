@@ -40,7 +40,7 @@ const UserProfile = () => {
               name="feedback"
                 className="cursor-pointer hover:bg-gray-500 hover:text-white p-2 rounded-md"
               >
-                feedback
+                Feedback
               </li>
             </Link>
           </ul>

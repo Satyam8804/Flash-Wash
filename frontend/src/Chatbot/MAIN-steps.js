@@ -7,7 +7,7 @@ import rec_UserInputPrompts from "./REC-userinputs-steps";
 const steps = [
   {
     id: "Greet",
-    message: `Hello, I am Caroline's personal assistant. I will reply to any questions you want to ask her.`,
+    message: `Hello, I am Flash Wash's personal assistant. I will reply to any questions you want to ask her.`,
     trigger: "Ask-name",
   },
   {
@@ -28,15 +28,15 @@ const steps = [
   {
     id: "contact-reasons",
     options: [
-      { value: "recruitment", label: "Recruitment", trigger: "recruitment" },
+      { value: "recruitment", label: "Services", trigger: "recruitment" },
       {
         value: "programming buddy",
-        label: "Looking for a programming buddy",
+        label: "Is there a penalty for canceling or rescheduling appointments",
         trigger: "programmingQ1",
       },
       {
         value: "ping pong",
-        label: "Want to play ping pong",
+        label: "What types of car wash services does Flash Wash offer",
         trigger: "PPQ1",
       },
     ],

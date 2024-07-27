@@ -22,7 +22,7 @@ const Contact = () => {
     setLoader(true)
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/v1/users/send-email', {
+      const response = await fetch('https://flash-wash-l6v3.onrender.com/api/v1/users/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

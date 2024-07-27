@@ -44,7 +44,7 @@ const ServiceDashboard = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
-    window.location.reload();
+    //window.location.reload();
   };
   const handleShow = () => setShow(true);
 
@@ -81,16 +81,29 @@ const ServiceDashboard = () => {
         notes,
         price.current
       );
-      if (res === true) {
-        alert(price.current);
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data)
         navigate("/checkout", { state: { price: price.current } });
-        //navigate('/api/v1/users/profile/appointment')
+       
+        //return data
       } else {
-        alert(price.current);
-        // toast.success("Appointment added successfully")
-        navigate("/checkout", { state: { price: price.current } });
-        //navigate('/api/v1/users/profile/appointment')
+        console.error("Error updating user profile:", res);
+        
+        toast.error(res?.message)
+      
       }
+      // if (res.ok) {
+        
+      //   navigate("/checkout", { state: { price: price.current } });
+      //   //navigate('/api/v1/users/profile/appointment')
+      // } else {
+        
+      //   console.log(res)
+      //   //navigate("/checkout", { state: { price: price.current } });
+      //   //navigate('/api/v1/users/profile/appointment')
+      // }
     } else {
       toast.error("Please Login to continue");
     }

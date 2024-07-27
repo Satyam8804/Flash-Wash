@@ -13,7 +13,7 @@ const Appointments = () => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/admin/get-all-appointment', {
+      const response = await fetch('https://flash-wash-l6v3.onrender.com/api/v1/admin/get-all-appointment', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${JSON.parse(accessToken)}`,
@@ -39,7 +39,7 @@ const Appointments = () => {
   return (
     <div className="flex flex-wrap w-full ">
       <span className="font-bold text-gray-500 text-2xl">APPOINTMENTS ({appointments?.length})</span>
-      <div className="appointment flex flex-row-reverse flex-wrap w-full h-full overflow-y-auto max-h-[510px]">
+      <div className="appointment flex flex-row flex-wrap w-full h-full overflow-y-auto max-h-[510px]">
       {appointments &&
         appointments.map((appointment) => (
           <AppointmentCard key={appointment._id} appointment={appointment} accessToken={accessToken}  />

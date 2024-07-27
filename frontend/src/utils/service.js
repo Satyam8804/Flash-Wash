@@ -1,6 +1,7 @@
+import toast from "react-hot-toast";
 
 const accessToken=localStorage.getItem('accessToken');
-const url = 'http://localhost:8000/api/v1/users/get-all-services'
+const url = 'https://flash-wash-l6v3.onrender.com/api/v1/users/get-all-services'
 export const fetchAllService = async () => {
   
     try {
@@ -27,11 +28,11 @@ export const fetchAllService = async () => {
     }
   };
 
-  const url1 = 'http://localhost:8000/api/v1/users/book-appointment';
+  const url1 = 'https://flash-wash-l6v3.onrender.com/api/v1/users/book-appointment';
 
   export const scheduleService = async (serviceId, scheduledDate, location, notes,price) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/users/book-appointment',{
+      const response = await fetch('https://flash-wash-l6v3.onrender.com/api/v1/users/book-appointment',{
         method:"POST",
         headers:{
           Authorization : `Bearer ${JSON.parse(accessToken)}`,
@@ -46,14 +47,18 @@ export const fetchAllService = async () => {
         })
     })
 
-    if (response.ok) {
-      const data = await response.json();
-      return data
-    } else {
-      console.error("Error updating user profile:", response);
+    // if (response.ok) {
+    //   const data = await response.json();
+     
+    //   toast.success(response?.message)
+    //   return data
+    // } else {
+    //   console.error("Error updating user profile:", response);
       
-      return response
-    }
+    //   toast.error(response?.message)
+    //   return response
+    // }
+    return response
     } catch (error) {
       console.log(error)
       return error

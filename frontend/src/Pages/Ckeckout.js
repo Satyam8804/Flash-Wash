@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link, Outlet, useNavigate,useLocation } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 
 const Checkout = (props) => {
@@ -18,7 +19,7 @@ const Checkout = (props) => {
   
   const openRazorpayModal = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/razorpay/order', paymentDetails);
+      const response = await axios.post('https://flash-wash-l6v3.onrender.com/api/razorpay/order', paymentDetails);
       const { data } = response;
       const options = {
         key: data.key,
@@ -34,6 +35,8 @@ const Checkout = (props) => {
             payment_id: response.razorpay_payment_id,
             order_id: data.id,
           };
+          
+          toast.success("Appointment added Successfully")
           navigate('/api/v1/users/profile/appointment')
         },
       };

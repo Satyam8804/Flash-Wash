@@ -14,7 +14,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/v1/admin/get-all-employees", {
+        const response = await fetch("https://flash-wash-l6v3.onrender.com/api/v1/admin/get-all-employees", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${JSON.parse(accessToken)}`,
@@ -38,7 +38,7 @@ const AppointmentCard = ({ appointment, accessToken }) => {
   const handleUpdate = async (appointmentId, updatedFields) => {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/admin/update-appointment",
+        "https://flash-wash-l6v3.onrender.com/api/v1/admin/update-appointment",
         {
           method: "PATCH",
           headers: {
@@ -90,8 +90,11 @@ const AppointmentCard = ({ appointment, accessToken }) => {
       // Send the update if there are changes
       if (Object.keys(updatedFields).length > 0) {
         await handleUpdate(appointment._id, updatedFields);
+        
       }
       window.location.reload()
+        
+      
     } catch (error) {
       console.error("Error saving changes:", error.message);
     } finally {
